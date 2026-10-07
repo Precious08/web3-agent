@@ -1487,3 +1487,27 @@ Explicitly NOT required to validate the core loop. Building these now adds cost 
 
 Rule: if a request needs any of the above to be valuable, it is by definition P1/P2, not MVP.
 
+---
+
+# **49\. Tooling Strategy — Free Now, Scale Later (v0.3)**
+
+## **49.1 Principle**
+
+MVP builds on **free tiers only ($0)**. No paid infra, LLM, data, or auth bill is required to validate Sec 38 core loop + Sec 40/40.6/40.7.
+
+Full matrix + limits verified Oct 2026: see `IMPLEMENTATION_PLAN.md` Appendix A.
+
+Locked MVP stack: **Vercel Hobby (web) + Render Free (API/worker) + Neon Free + pgvector (DB) + Auth.js (auth, $0 unlimited) + OpenRouter free → Groq fallback (LLM) + Upstash Redis free + Resend + PostHog/Sentry free.** Alt if one-vendor preferred: Supabase Free (DB+Auth+storage, accepts 7-day pause).
+
+## **49.2 Scale Triggers (pay only when this hurts)**
+
+1. **$10 OpenRouter top-up** → 1k/d + stable failover (first spend, when free 50/d throttles evals).
+2. **$7/mo Render Starter** → no 15-min sleep / 1-min wake (when users hit cold API or cron misses).
+3. **DB:** Neon Launch pay-as-you-go / Supabase Pro $25 → when >1GB / need backups / always-on / >50k auth MAU.
+4. **Web commercial:** Vercel Pro $20 or Cloudflare Workers (commercial use — Hobby = non-commercial only).
+5. **Data:** CoinGecko paid / Alchemy-Moral is free→paid → only when rate limits block refresh jobs; social/on-chain depth stays stubbed until P1 (per Sec 8 pruned, Sec 48).
+
+## **49.3 Rule**
+
+No PR may introduce a paid-only dependency in MVP without a free fallback + recorded scale trigger above. Cost/Latency dashboards (Phase 9) must show LLM + hosting spend before any P1 approval.
+
