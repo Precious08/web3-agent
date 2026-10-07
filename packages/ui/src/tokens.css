@@ -30,11 +30,11 @@
   --text: #0d1526;
   --text-muted: #5b6b82;
   --accent: #2f5bff;
-  --signal-strong: #16a34a;
+  --signal-strong: #15803d;
   --signal-emerging: #2563eb;
   --signal-uncertain: #b45309;
-  --signal-noise: #9ca3af;
-  --edge-confirmed: #16a34a;
+  --signal-noise: #9ca3af; /* dot/border only — body text uses --text-muted (5.43:1) */
+  --edge-confirmed: #15803d;
   --edge-strong: #2563eb;
   --edge-possible: #b45309;
   --edge-unverified: #9ca3af;
