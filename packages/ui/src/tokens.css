@@ -1,41 +1,33 @@
-/* Phase 1 tokens — dark-first default, light via [data-theme="light"]. Semantic signal palette. */
-:root,
-[data-theme="dark"] {
-  --bg: #0a0e14;
-  --surface: #111826;
-  --surface-2: #1a2333;
-  --border: #243145;
-  --text: #e8eef7;
-  --text-muted: #93a1b8;
-  --accent: #5b8cff;
-  --signal-strong: #22c55e;
-  --signal-emerging: #3b82f6;
-  --signal-uncertain: #f59e0b;
-  --signal-noise: #6b7280;
-  --edge-confirmed: #22c55e;
-  --edge-strong: #3b82f6;
-  --edge-possible: #f59e0b;
-  --edge-unverified: #6b7280;
+/* Dark-only design language. No light theme — removed by decision (dark is the product identity). */
+:root {
+  --bg-0: #05070c;
+  --bg: #0a0e15;
+  --surface: #0e1420;
+  --surface-2: #141c2d;
+  --surface-3: #1b2540;
+  --border: #22304a;
+  --border-soft: #182238;
+  --text: #ecf1fa;
+  --text-muted: #8f9eb8;
+  --text-faint: #5d6b86;
+  --accent: #6d9bff;
+  --accent-2: #37e0a0;
+  --accent-warm: #ffb224;
+  --signal-strong: #34e39a;
+  --signal-emerging: #6d9bff;
+  --signal-uncertain: #ffb224;
+  --signal-noise: #69768e;
+  --edge-confirmed: #34e39a;
+  --edge-strong: #6d9bff;
+  --edge-possible: #ffb224;
+  --edge-unverified: #69768e;
   --radius-sm: 10px;
-  --radius-lg: 14px;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Inter", sans-serif;
-}
-
-[data-theme="light"] {
-  --bg: #f7f9fc;
-  --surface: #ffffff;
-  --surface-2: #eef2f7;
-  --border: #dbe3ef;
-  --text: #0d1526;
-  --text-muted: #5b6b82;
-  --accent: #2f5bff;
-  --signal-strong: #15803d;
-  --signal-emerging: #2563eb;
-  --signal-uncertain: #b45309;
-  --signal-noise: #9ca3af; /* dot/border only — body text uses --text-muted (5.43:1) */
-  --edge-confirmed: #15803d;
-  --edge-strong: #2563eb;
-  --edge-possible: #b45309;
-  --edge-unverified: #9ca3af;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --glow-strong: 0 0 24px rgb(52 227 154 / 0.16);
+  --glow-emerging: 0 0 24px rgb(109 155 255 / 0.18);
+  --card-shadow: 0 18px 50px rgb(0 0 0 / 0.45);
+  color-scheme: dark;
 }
