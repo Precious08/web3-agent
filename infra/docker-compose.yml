@@ -1,0 +1,22 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: web3agent
+      POSTGRES_USER: web3agent
+      POSTGRES_PASSWORD: web3agent
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  # api/web/worker run on Render Free in MVP (Sec 49); local only:
+  # api:
+  #   build: ../apps/api
+  # web:
+  #   build: ../apps/web
+volumes:
+  postgres-data:
