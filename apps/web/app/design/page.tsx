@@ -1,4 +1,4 @@
-// /design preview — 3 hardcoded mocks (no backend). Phase 1 exit: badges + cards + compare + fact/take render from these.
+// /design preview — 3 hardcoded mocks (no backend).
 import {
   SignalBadge,
   DiscoveryCard,
@@ -43,28 +43,63 @@ const MOCKS: Discovery[] = [
   },
 ];
 
+function Section({ title, hint, children }: { title: string; hint: string; children: React.ReactNode }) {
+  return (
+    <section style={{ display: "grid", gap: 10 }}>
+      <div>
+        <h2 style={{ margin: "8px 0 2px", fontSize: 15, color: "var(--text)" }}>{title}</h2>
+        <p style={{ margin: 0, fontSize: 13, color: "var(--text-muted)" }}>{hint}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
+
 export default function DesignPage() {
   return (
-    <main style={{ padding: 24, display: "grid", gap: 16 }}>
-      <h1>Design preview — mocked, no backend</h1>
-      <div style={{ display: "flex", gap: 8 }}>
-        <SignalBadge state="strong" />
-        <SignalBadge state="emerging" />
-        <SignalBadge state="uncertain" />
-        <SignalBadge state="noise" />
+    <main style={{ padding: "24px 24px 48px", display: "grid", gap: 24, maxWidth: 720, margin: "0 auto" }}>
+      <div>
+        <h1 style={{ margin: "4px 0", fontSize: 22 }}>Design preview</h1>
+        <p style={{ margin: 0, fontSize: 13, color: "var(--text-muted)" }}>
+          Mocked, no backend. Toggle light/dark in the header to compare contrast.
+        </p>
       </div>
-      {MOCKS.map((m) => (
-        <DiscoveryCard key={m.id} item={m} />
-      ))}
-      <FactTakeUnknown
-        fact="Helios testnet launched 18 days ago (docs + GitHub)."
-        take="Early dev + ecosystem convergence is worth investigating."
-        unknown="Mainnet date, token, audit status unconfirmed."
-      />
-      <CompareTable2Way
-        a={{ Development: "Strong", Ecosystem: "High", Funding: "Seed" }}
-        b={{ Development: "Moderate", Ecosystem: "Early", Funding: "Unverified" }}
-      />
+
+      <Section title="Signal badges" hint="4 states only (PRD Sec 22 pruned). Label is body text — dots carry the color.">
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <SignalBadge state="strong" />
+          <SignalBadge state="emerging" />
+          <SignalBadge state="uncertain" />
+          <SignalBadge state="noise" />
+        </div>
+      </Section>
+
+      <Section title="Discoveries" hint="What happened → why it matters → evidence → counter → next (PRD Sec 16).">
+        <div style={{ display: "grid", gap: 12 }}>
+          {MOCKS.map((m) => (
+            <DiscoveryCard key={m.id} item={m} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Fact / Take / Unknown" hint="3-way quality split (PRD Sec 23 pruned).">
+        <div style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: 14, background: "var(--surface)" }}>
+          <FactTakeUnknown
+            fact="Helios testnet launched 18 days ago (docs + GitHub)."
+            take="Early dev + ecosystem convergence is worth investigating."
+            unknown="Mainnet date, token, audit status unconfirmed."
+          />
+        </div>
+      </Section>
+
+      <Section title="Compare (2-way)" hint="Projects only in MVP (PRD Sec 21 pruned).">
+        <div style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: 14, background: "var(--surface)" }}>
+          <CompareTable2Way
+            a={{ Development: "Strong", Ecosystem: "High", Funding: "Seed" }}
+            b={{ Development: "Moderate", Ecosystem: "Early", Funding: "Unverified" }}
+          />
+        </div>
+      </Section>
     </main>
   );
 }
