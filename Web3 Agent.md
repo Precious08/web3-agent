@@ -234,7 +234,7 @@ New developments generate new discoveries and restart the research loop.
 
 # **8\. Research Scope**
 
-The product should research and connect information across ten major areas.
+The product should research and connect information across ten major areas. v0.2-pruned MVP focus: 4 core (8.1 Projects, 8.2 Tokens/Market, 8.7 Social, 8.8 Funding + 8.9 Dev). Rest (8.4 People graph depth, 8.5 Ecosystem depth, 8.6 Wallet-level on-chain, 8.3 Cultural trends, 8.10 Market microstructure) are best-effort / stubbed, not guaranteed.
 
 ## **8.1 Projects & Protocols**
 
@@ -340,9 +340,9 @@ This connected structure is a major product differentiator.
 
 # **10\. Home / Intelligence Dashboard**
 
-The dashboard is the user's main starting point.
+The dashboard is the user's main starting point. MVP keeps 3 sections only to avoid duplication with Discover (Sec 16-17).
 
-## **Sections**
+## **Sections (MVP)**
 
 ### **For You**
 
@@ -355,14 +355,6 @@ Personalized discoveries based on:
 * Previous research  
 * Saved signals
 
-### **Emerging**
-
-Potentially important developments that appear relatively early.
-
-### **Alpha Radar**
-
-Signals with meaningful combinations of evidence.
-
 ### **Your Watchlist**
 
 Recent important changes involving tracked subjects.
@@ -371,9 +363,7 @@ Recent important changes involving tracked subjects.
 
 Previously investigated subjects.
 
-### **Trending Narratives**
-
-Narratives showing meaningful changes in activity, attention, development, or ecosystem participation.
+> NOTE (v0.2-pruned): **Emerging, Alpha Radar, Trending Narratives are NOT separate Home sections.** They are views of the single Discover stream defined in Sec 16-17. This removes 4-way duplication (Home vs Feed vs Radar vs Personalized).
 
 ---
 
@@ -510,11 +500,13 @@ Examples:
 
 ## **13.7 Timeline**
 
-Show meaningful historical developments.
+Show meaningful historical developments. MVP: Key events only, if available — no guarantee of full history.
 
 ## **13.8 Deep Research**
 
-Allow the user to investigate the subject in greater depth.
+Allow the user to investigate the subject in greater depth. MVP: via follow-up chat (Sec 12), not a separate page.
+
+> NOTE (v0.2-pruned): MVP Intelligence Page blocks = Overview → Signals → Evidence → Connections → Counter-Signals → Next steps. Timeline/Deep are collapsed as above to avoid endless scroll.
 
 ---
 
@@ -639,9 +631,9 @@ The product should present an assessment rather than a guaranteed prediction.
 
 ---
 
-# **16\. Alpha Feed**
+# **16\. Alpha Feed — Single Discover Stream (with Radar view)**
 
-The Alpha Feed provides a continuously updated discovery stream.
+The Alpha Feed provides a continuously updated discovery stream. Emerging Radar (Sec 17) is a filtered view of this same stream (early / outside-watchlist), not a separate backend.
 
 Each discovery should communicate:
 
@@ -669,9 +661,9 @@ The product should avoid sensational claims such as guaranteed returns or "100x 
 
 ---
 
-# **17\. Emerging Radar**
+# **17\. Emerging Radar — Filtered View of Sec 16**
 
-Emerging Radar focuses on things users may not yet know about.
+Emerging Radar focuses on things users may not yet know about. Implementation: same API/ranking as Sec 16 with `earliness + novelty` boost + `surpriseMe` slider (Sec 44.2).
 
 ### **Categories**
 
@@ -773,9 +765,9 @@ The product should avoid presenting uncertain relationships as facts.
 
 ---
 
-# **21\. Compare Mode**
+# **21\. Compare Mode (MVP: projects only, 2-way)**
 
-Users can compare multiple subjects.
+Users can compare multiple subjects. MVP: 2 projects max, table + explanation of key differences. Comparing narratives/ecosystems/opportunities → P2 (see Sec 48).
 
 Comparison should focus on meaningful differences.
 
@@ -792,63 +784,45 @@ The agent should explain important differences instead of relying entirely on sc
 
 ---
 
-# **22\. Signal vs Noise**
+# **22\. Signal vs Noise (MVP: 4 states)**
 
-The product should classify information using clear states.
-
-### **Confirmed**
-
-Strongly supported information.
-
-### **Interesting**
-
-Worth investigating but not yet a strong signal.
-
-### **Emerging**
-
-Early evidence of something potentially meaningful.
+The product should classify information using clear states. v0.2-pruned collapses 7 → 4 for UI. Internal 7-factor scoring (Sec 15) stays backend-only.
 
 ### **Strong Signal**
 
 Multiple meaningful indicators are converging.
 
-### **Weak / Uncertain**
+### **Emerging**
 
-Insufficient evidence.
+Early evidence of something potentially meaningful. Worth investigating.
 
-### **Contradictory**
+### **Uncertain**
 
-Evidence points in different directions.
+Insufficient or contradictory evidence.
 
 ### **Noise**
 
 Information with little meaningful relevance.
 
+> Deferred detailed labels (Interesting, Confirmed, Contradictory as separate states) → see Sec 48 Out-of-Scope. Use Uncertain + explanation instead.
+
 ---
 
-# **23\. Research Quality Framework**
+# **23\. Research Quality Framework (MVP UI: 3-way)**
 
-The product should distinguish between:
+The product should distinguish between (UI shows 3; full 5-way stays as internal prompt rule):
 
 ### **Fact**
 
 What is directly observed or supported.
 
-### **Interpretation**
+### **Take**
 
-What the information may mean.
+What the information may mean (merges former Interpretation + Signal + Hypothesis for UI simplicity).
 
-### **Signal**
+### **Unknown**
 
-Why the information may be meaningful.
-
-### **Hypothesis**
-
-What could happen if the trend continues.
-
-### **Uncertainty**
-
-What remains unknown.
+What remains unknown / uncertain.
 
 This separation is essential for preventing speculation from being presented as fact.
 
@@ -1340,17 +1314,15 @@ This is the core of the request: users define the universe of projects/opportuni
 
 ## **44.1 Project Type Controls**
 
-User can include/exclude and weight:
+MVP Basic (P0) — user can include/exclude and weight:
 
 * **Project Stage:** Idea / Pre-launch / Testnet / Mainnet-beta / Live + traction / Established
 * **Sector:** DeFi, L1/L2 Infra, Restaking, Depin, AI x Crypto, Gaming, NFTs, SocialFi, RWA, Privacy, Interop, etc. (multi-select + "open to new sectors" toggle)
 * **Ecosystems / Chains:** Ethereum, Solana, Base, Arbitrum, BTC L2s, Cosmos, etc. + "Any chain" + custom chain add
 * **Token Status:** No token yet / Points program / TGE upcoming / Liquid token / No token planned
-* **Market Size / Liquidity:** Micro-cap / Low-cap / Mid-cap / Exclude illiquid (< $X liquidity) / Minimum 24h volume
-* **Funding Stage:** Bootstrapped / Pre-seed / Seed / Series A+ / Grant-funded / Exchange-backed / No funding info
-* **Team Transparency:** Doxxed / Semi-doxxed / Anonymous-OK
-* **Audit / Security Minimum:** Audited only / Audit preferred / No requirement
 * **User's Role:** Airdrop hunter / Long-term investor / Developer / Researcher / Content creator — changes what "relevant" means
+
+Advanced (P2, NOT MVP — see Sec 48): Market Size / Liquidity <$X minimums, Funding Stage granular, Team Transparency (doxxed/semi/anon), Audit Minimum. Do not build for validation — data unreliable, almost no user will set them.
 
 Each control supports: **Must-have / Interested / Muted / Blocked.**
 
@@ -1366,11 +1338,11 @@ Example:
 * Emerging Tech Interests (ZK, FHE, Intent-based, etc.)
 * "Surprise Me" slider: 0% (only my interests) → 100% (max adjacent discoveries). Default 25% to avoid bubble per Section 18.
 
-## **44.3 People & Source Preferences**
+## **44.3 People & Source Preferences (P2 — NOT MVP)**
 
 * Preferred source types: Official docs / GitHub / On-chain / Research articles / Governance forums / Social
-* Trusted vs. muted KOLs / analysts / publications
-* Team background preferences: e.g. "Prioritize teams with prior exits" vs "No preference"
+* Trusted vs. muted KOLs / analysts / publications — DEFERRED (reputation graph is its own product, almost no validation value)
+* Team background preferences — DEFERRED, see Sec 48
 
 Backend effect: These preferences become the **UserPreference Model** that ranks Search (Sec 11), For You (Sec 10), Alpha Feed (Sec 16), and Emerging Radar (Sec 17).
 
@@ -1393,22 +1365,17 @@ User can save default filters as their personal view:
 
 * Ecosystem, Sector, Timeframe (24h / 7d / 30d), Signal strength, Market size, Dev / Social / On-chain activity minimums
 
-## **45.3 Signal Tuning (Sec 14 + 15)**
+## **45.3 Signal Tuning (Sec 14 + 15) — MVP keeps 1 control**
 
-Advanced controls to implement the 7-factor assessment in the user's own terms:
+* **Sensitivity (MVP):** Conservative (fewer, stronger signals) ↔ Aggressive (more, earlier signals). Default Balanced + always-on counter-signals.
 
-* **Signal Type Weights:** Development / Ecosystem / Social / Funding / On-chain / Market — sliders (Ignore → Important → Critical)
-* **Sensitivity:** Conservative (fewer, stronger signals) ↔ Aggressive (more, earlier signals)
-* **Signal Convergence Requirement:** Single strong signal OK vs. Require 2+ / 3+ converging signals (default: 2+ per Sec 6.3)
-* **Counter-Signal Tolerance:** Always show counter-signals (default ON) / Hide weak counter-signals
-* **Early-Stage Bias:** Prefer early-but-risky vs. Prefer validated traction
-* **Hype Filter:** Strict (hide high-hype / low-evidence) / Balanced / Off
+Advanced (P2, NOT MVP): Signal Type Weights sliders, ConvergenceMin custom, Counter-Signal Tolerance toggle, Early-Stage Bias slider, Hype Filter Strict/Balanced/Off. Reason: almost no user tunes 10 knobs; adds fatigue, no validation lift.
 
 Each signal card must link: "Why this score? → View weights → Adjust"
 
-## **45.4 Alerts & Monitoring (Sec 25)**
+## **45.4 Alerts & Monitoring (Sec 25) — MVP: global only**
 
-Per-watchlist-item overrides + global defaults:
+Global threshold (Strong/Moderate+/Any) + max/day cap + in-app. Per-item overrides, Telegram/Discord, quiet hours → P1/P2 (see Sec 48).
 
 * Alert types ON/OFF: Major dev, Ecosystem change, Narrative shift, Funding, Social spike, Market move, New connection, Signal convergence
 * Alert threshold: Only Strong Signal / Moderate+ / Any Emerging
@@ -1416,24 +1383,24 @@ Per-watchlist-item overrides + global defaults:
 * Quiet hours + Max alerts per day (to avoid noise, per Sec 25)
 * Per-item example: "Track EigenLayer: Alert me only on Funding + Mainnet, Strong only"
 
-## **45.5 Research Depth & Evidence (Sec 13 + 23)**
+## **45.5 Research Depth & Evidence (Sec 13 + 23) — Defaults only for MVP**
 
-* Default research depth: Quick overview / Standard (Overview → Signals → Evidence → Counter) / Deep (all + Timeline + Deep Research)
-* Fact vs. Interpretation display: Always separate (default ON per Sec 23), Evidence inline vs. collapsed
-* Language / Reading level: Technical vs. Simplified summaries
+* Default research depth: Standard (Overview → Signals → Evidence → Counter). Quick/Deep are P1.
+* Fact / Take / Unknown always separated (default ON per Sec 23). Evidence inline.
+
+NOT MVP (see Sec 48): Reading level, Technical vs Simplified toggle, Evidence collapsed modes.
 
 ---
 
 # **46\. Workspace, Privacy, Appearance & Backend Behavior**
 
-## **46.1 Dashboard Layout (Sec 10)**
+## **46.1 Dashboard Layout (Sec 10) — Defaults only for MVP**
 
-* Reorder / hide Home sections: For You, Emerging, Alpha Radar, Watchlist, Continue Research, Trending Narratives
-* Default landing tab: Dashboard / Alpha Feed / Radar / Watchlist
-* Card density: Compact / Comfortable
-* Theme: Dark (default for Web3) / Light / System
+* Fixed MVP layout: For You + Watchlist + Continue Research. Reorder/hide, landing tab, density, theme → P1 polish, NOT MVP (see Sec 48).
 
-## **46.2 Watchlist & Workspace Defaults (Sec 24 + 26)**
+## **46.2 Watchlist & Workspace Defaults (Sec 24 + 26) — MVP minimal**
+
+* Save + monitor ON for saved items, history list. Auto-add rules, retention options, Incognito, Export/PDF/Share → P1/P2, see Sec 48.
 
 * Auto-add to Watchlist when: Saved / Deep-researched / Alert-triggered (user chooses)
 * Default monitoring ON for saved items? Yes/No
@@ -1446,32 +1413,13 @@ Per-watchlist-item overrides + global defaults:
 * Personalization data: View what the agent learned ("You research Base DeFi often"), Edit / Remove interests inferred from behavior
 * Opt-out of behavior-based personalization (use only explicit settings)
 
-## **46.4 Account**
+## **46.4 Account (NOT MVP)**
 
-* Profile, email, connected wallets (read-only, for reputation/personalized on-chain relevance — never custodial), sessions, delete account
-* Plan / usage (if applicable)
+* Profile, email, sessions, delete account. Deferred: connected wallets (read-only), Plan/usage — out of scope for research validation, see Sec 48.
 
-## **46.5 Backend Requirements**
+## **46.5 Backend Requirements — Moved to Tech Spec (NOT user-facing PRD)**
 
-The Control Center must persist to a `UserSettings` object:
-
-```json
-{
-  "projectFilters": { "stages": [], "sectors": [], "chains": [], "tokenStatus": [], "muted": [], "blocked": [] },
-  "narratives": { "followed": [], "muted": [], "surpriseMe": 25 },
-  "signalWeights": { "dev": 3, "ecosystem": 3, "social": 1, "funding": 2, "onchain": 3, "market": 2 },
-  "sensitivity": "balanced",
-  "convergenceMin": 2,
-  "feedDefaults": {},
-  "alerts": { "globalThreshold": "moderate", "maxPerDay": 10, "quietHours": [] },
-  "researchDepth": "standard",
-  "dashboardLayout": [],
-  "privacy": { "saveHistory": true, "behavioralLearning": true }
-}
-```
-
-* Every recommendation API must accept `userId` and apply these filters before ranking.
-* Every surfaced item must return `reasonCodes`: e.g. `["matches:Base", "signal:dev+ecosystem", "outside-watchlist:adjacent"]` to power "Why am I seeing this?"
+The Control Center persists to a `UserSettings` object (see tech spec, not detailed here). Requirement retained: every recommendation applies user filters before ranking; every item explains "Why am I seeing this?" with 1-click Tune.
 
 ---
 
@@ -1483,17 +1431,17 @@ The Control Center must persist to a `UserSettings` object:
 **As an alpha hunter, I want to choose ecosystems, sectors, project stages, token status, and muted/blocked topics so that my feed only shows relevant opportunities.**
 * Acceptance: User can set 44.1 controls in <3 min via onboarding + edit later; Feed/Radar updates instantly; Blocked never appears except via direct search with warning.
 
-### **US-24 — Tune signal sensitivity**
-**As a researcher, I want to weight signal types and set convergence/sensitivity so that I control noise vs. earliness.**
-* Acceptance: Sliders persist; Signal Assessment explanation reflects custom weights; Reset works.
+### **US-24 — Tune signal sensitivity (MVP scope: single slider)**
+**As a researcher, I want to set Conservative/Balanced/Aggressive so that I control noise vs. earliness.**
+* Acceptance: Single sensitivity persists; assessment reflects it; full weight sliders → P2.
 
-### **US-25 — Control alerts fully**
-**As a user, I want per-topic alert types, thresholds, channels, quiet hours, and daily caps so that I only get meaningful alerts.**
-* Acceptance: Global + per-item overrides work; Cap respected; No alert spam in test (max/day enforced).
+### **US-25 — Control alerts (MVP scope: global only)**
+**As a user, I want global threshold + daily cap + in-app so that I only get meaningful alerts.**
+* Acceptance: Global threshold + cap respected. Per-item, Telegram/Discord, quiet hours → P1/P2.
 
-### **US-26 — Customize dashboard**
+### **US-26 — Customize dashboard (P1 — NOT MVP)**
 **As a user, I want to reorder/hide dashboard sections and set default landing view so that my workflow is faster.**
-* Acceptance: Layout persists across sessions/devices.
+* Acceptance: Deferred to P1. MVP uses fixed layout (Sec 46.1).
 
 ### **US-27 — Understand and correct personalization**
 **As a user, I want to see why I was shown something and inferred interests, and edit/remove them, so that I trust the agent.**
@@ -1521,4 +1469,21 @@ User rates >70% of For You / Feed items as relevant in first week, and can artic
 
 ### **40.7 Control & Trust**
 User can locate and change any filter affecting their feed in <2 clicks from the item ("Why this? → Tune"), and reset without losing watchlist.
+
+---
+
+# **48\. Out-of-Scope / Deferred — Almost Not Necessary for MVP (v0.2-pruned)**
+
+Explicitly NOT required to validate the core loop. Building these now adds cost without user lift.
+
+**A. Advanced project filters:** Audit minimum, Team transparency, Funding-stage granular, Liquidity <$X / volume minimums, Team prior-exits (from 44.1/44.3)
+**B. KOL / source reputation:** Trusted/muted KOLs, publication trust scores
+**C. Full signal tuning:** 6 weight sliders, ConvergenceMin custom, Hype filter, Early-bias slider, Counter tolerance toggle — keep single Sensitivity only
+**D. Feed polish:** Card density, Theme, Landing tab, Reorderable dashboard, Reading level / Simplified summaries
+**E. Comms & identity:** Telegram/Discord alerts, Quiet hours, Per-item overrides, Connected wallets, Plan/usage
+**F. Workspace expansion:** Auto-add rules, Retention options, Incognito, Export PDF/Share, Collaborative research
+**G. Taxonomy extras:** Interesting/Confirmed/Contradictory as separate states; 5-way Fact/Interpretation/Signal/Hypothesis/Uncertainty in UI (keep 3-way Fact/Take/Unknown); Compare narratives/ecosystems; Full Timeline history
+**H. Backend detail in PRD:** UserSettings JSON, reasonCodes — move to tech spec
+
+Rule: if a request needs any of the above to be valuable, it is by definition P1/P2, not MVP.
 
