@@ -1,5 +1,5 @@
 // Phase 1 real markup — no deps, CSS vars, keyboard + SR accessible. Tailwind/shadcn classes added when Next.js lands.
-import type { SignalState, EdgeConfidence, FactTake } from "../theme";
+import type { SignalState, EdgeConfidence, FactTake } from "./theme";
 
 const LABEL: Record<SignalState, string> = {
   strong: "Strong signal",
