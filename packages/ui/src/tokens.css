@@ -1,0 +1,41 @@
+/* Phase 1 tokens — dark-first default, light via [data-theme="light"]. Semantic signal palette. */
+:root,
+[data-theme="dark"] {
+  --bg: #0a0e14;
+  --surface: #111826;
+  --surface-2: #1a2333;
+  --border: #243145;
+  --text: #e8eef7;
+  --text-muted: #93a1b8;
+  --accent: #5b8cff;
+  --signal-strong: #22c55e;
+  --signal-emerging: #3b82f6;
+  --signal-uncertain: #f59e0b;
+  --signal-noise: #6b7280;
+  --edge-confirmed: #22c55e;
+  --edge-strong: #3b82f6;
+  --edge-possible: #f59e0b;
+  --edge-unverified: #6b7280;
+  --radius-sm: 10px;
+  --radius-lg: 14px;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --surface-2: #eef2f7;
+  --border: #dbe3ef;
+  --text: #0d1526;
+  --text-muted: #5b6b82;
+  --accent: #2f5bff;
+  --signal-strong: #16a34a;
+  --signal-emerging: #2563eb;
+  --signal-uncertain: #b45309;
+  --signal-noise: #9ca3af;
+  --edge-confirmed: #16a34a;
+  --edge-strong: #2563eb;
+  --edge-possible: #b45309;
+  --edge-unverified: #9ca3af;
+}
