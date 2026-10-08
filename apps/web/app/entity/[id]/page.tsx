@@ -1,12 +1,11 @@
-// Entity Intelligence dossier (PRD Sec 13 pruned: 6 blocks). /entity/:id
+// Entity dossier, terminal-dense. Same 6 blocks, tighter rows, stat strip, numbered evidence.
 import { SignalBadge, EvidenceInline, FactTakeUnknown, ConnectionEdge, CounterCallout, WhyThisSheet } from "@web3-agent/ui";
 import { api } from "../../../lib/trpc";
 import { FALLBACK } from "../../../lib/fallback";
-import { Eyebrow, KindTag, Panel, Stat, SectionHead, row } from "../../../components/chrome";
+import { Eyebrow, KindTag, Stat, SignalBar, SectionHead, row } from "../../../components/chrome";
 
 export const dynamic = "force-dynamic";
 
-/** Derived, honestly-labeled edges from whyCodes (real edge store wires in Phase 7). */
 function derivedEdges(whyCodes: string[], title: string) {
   return whyCodes
     .filter((c) => c.startsWith("matches:") || c.startsWith("narrative:"))
@@ -19,6 +18,8 @@ function derivedEdges(whyCodes: string[], title: string) {
     });
 }
 
+const box: React.CSSProperties = { border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "var(--surface)", overflow: "hidden" };
+
 export default async function EntityPage({ params }: { params: { id: string } }) {
   let d;
   try {
@@ -29,84 +30,75 @@ export default async function EntityPage({ params }: { params: { id: string } })
   const strong = d.signals.some((s) => s.state === "strong");
   const conv = new Set(d.signals.map((s) => s.type)).size;
   return (
-    <main style={{ padding: "44px 24px 80px", display: "grid", gap: 28, maxWidth: 780, margin: "0 auto" }}>
-      <Panel pad={22}>
-        <div style={{ display: "grid", gap: 12 }}>
-          <div style={row()}>
-            <Eyebrow>{d.kind} · Dossier</Eyebrow>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
-            <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 30, letterSpacing: -0.3 }}>{d.title}</h1>
-            <SignalBadge state={strong ? "strong" : "emerging"} />
-          </div>
-          <p style={{ margin: 0, color: "var(--text)", fontSize: 15, lineHeight: 1.65 }}>{d.why}</p>
-          <div style={{ display: "flex", gap: 32, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
-            <Stat label="Converging signals" value={String(conv)} />
-            <Stat label="Sources cited" value={String(d.evidence.length)} />
-            <Stat label="Counters" value={String(d.counters.length)} />
-          </div>
+    <main style={{ padding: "28px 24px 72px", display: "grid", gap: 24, maxWidth: 980, margin: "0 auto" }}>
+      <div style={{ display: "grid", gap: 10 }}>
+        <div style={row()}>
+          <Eyebrow>{d.kind} · Dossier</Eyebrow>
+          <KindTag kind={d.kind} />
         </div>
-      </Panel>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
+          <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28, letterSpacing: -0.3 }}>{d.title}</h1>
+          <SignalBadge state={strong ? "strong" : "emerging"} />
+        </div>
+        <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6, maxWidth: 640 }}>{d.why}</p>
+        <div style={{ display: "flex", gap: 28, alignItems: "center", padding: "12px 0", borderTop: "1px solid var(--border-soft)", borderBottom: "1px solid var(--border-soft)", flexWrap: "wrap" }}>
+          <Stat label="Converging" value={String(conv)} />
+          <Stat label="Sources" value={String(d.evidence.length)} />
+          <Stat label="Counters" value={String(d.counters.length)} />
+          <SignalBar state={strong ? "strong" : "emerging"} width={140} />
+        </div>
+      </div>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="Signals" hint="Each type below is independently observed — convergence is the thesis." />
-        <Panel>
-          <div style={{ display: "grid", gap: 10 }}>
-            {d.signals.map((s) => (
-              <div key={s.id} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-                <SignalBadge state={s.state} label={s.type} />
-                <span style={{ fontSize: 13.5 }}>{s.magnitude}</span>
-                <span style={{ fontSize: 12.5, color: "var(--text-faint)" }}>evidence: {s.evidenceIds.join(", ")}</span>
-              </div>
-            ))}
-          </div>
-        </Panel>
+      <section style={{ display: "grid", gap: 10 }}>
+        <SectionHead title="Signals" hint="Independently observed types — convergence is the thesis." />
+        <div style={box}>
+          {d.signals.map((s) => (
+            <div key={s.id} className="rowhover" style={{ display: "flex", gap: 10, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--border-soft)", flexWrap: "wrap" }}>
+              <SignalBadge state={s.state} label={s.type} />
+              <span className="tabular" style={{ fontSize: 13.5 }}>{s.magnitude}</span>
+              <span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-faint)" }}>ev: {s.evidenceIds.join(", ")}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="Evidence" hint="Claims stay attached to sources — never a dumped link list." />
-        <Panel>
+      <section style={{ display: "grid", gap: 10 }}>
+        <SectionHead title="Evidence" hint="Attached to claims, numbered for reference." />
+        <div style={{ ...box, padding: 16 }}>
           <EvidenceInline claim={d.why} evidence={d.evidence} />
-        </Panel>
+        </div>
       </section>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="Connections" hint="Derived and unverified until the edge store lands in Phase 7." />
-        <Panel>
+      <section style={{ display: "grid", gap: 10 }}>
+        <SectionHead title="Connections" hint="Derived, unverified — edge store lands in Phase 7." />
+        <div style={{ ...box, padding: "4px 16px" }}>
           {derivedEdges(d.whyCodes, d.title).map((e) => (
             <ConnectionEdge key={`${e.from}${e.to}`} {...e} />
           ))}
-        </Panel>
+        </div>
       </section>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="Challenge the thesis" hint="Both sides, always — counters are required, never optional." />
-        <Panel>
-          <div style={{ display: "grid", gap: 14 }}>
-            <CounterCallout points={d.counters} />
-            <FactTakeUnknown fact={d.why} take={d.next.join(" → ")} unknown={d.unknowns.join(" ")} />
-          </div>
-        </Panel>
+      <section style={{ display: "grid", gap: 10 }}>
+        <SectionHead title="Challenge" hint="Counters required. Unknowns explicit." />
+        <div style={{ ...box, padding: 16, display: "grid", gap: 14 }}>
+          <CounterCallout points={d.counters} />
+          <FactTakeUnknown fact={d.why} take={d.next.join(" → ")} unknown={d.unknowns.join(" ")} />
+        </div>
       </section>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="What to investigate next" hint="Follow the thread deeper." />
-        <Panel>
-          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--text-muted)", fontSize: 14, lineHeight: 1.8 }}>
-            {d.next.map((n) => (
-              <li key={n}>{n}</li>
-            ))}
-          </ul>
-          <div style={{ marginTop: 12 }}>
-            <WhyThisSheet reasons={d.whyCodes} tuneHref="/settings#relevant" />
-          </div>
-        </Panel>
+      <section style={{ display: "grid", gap: 10 }}>
+        <SectionHead title="Next" hint="Follow the thread." />
+        <div style={box}>
+          {d.next.map((n, i) => (
+            <div key={n} style={{ display: "flex", gap: 12, padding: "10px 14px", borderBottom: "1px solid var(--border-soft)", fontSize: 13.5 }}>
+              <span className="tabular" style={{ color: "var(--text-faint)" }}>{String(i + 1).padStart(2, "0")}</span>
+              <span>{n}</span>
+            </div>
+          ))}
+        </div>
+        <WhyThisSheet reasons={d.whyCodes} tuneHref="/settings#relevant" />
+        <p style={{ margin: 0, fontSize: 13 }}><a href="/discover">← Back to Discover</a></p>
       </section>
-
-      <p style={{ margin: 0, fontSize: 13 }}>
-        <a href="/discover">← Back to Discover</a>
-        {" · "}<KindTag kind={d.kind} />
-      </p>
     </main>
   );
 }

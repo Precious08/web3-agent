@@ -1,4 +1,4 @@
-// Onboarding wizard (P0-9): 4 steps, <3 min, skippable. Saves local + best-effort API sync.
+// Onboarding: same 4 steps, terminal dress — progress segments, full-width option rows.
 "use client";
 
 import { useState } from "react";
@@ -20,13 +20,20 @@ export default function Onboarding() {
     setDone((await syncToApi(s)) ? "Saved + synced to API." : "Saved locally (API offline — will sync later).");
   };
 
+  const rowOpt = (on: boolean): React.CSSProperties => ({
+    display: "flex", gap: 10, alignItems: "center", border: `1px solid ${on ? "var(--accent)" : "var(--border-soft)"}`,
+    borderRadius: 10, padding: "10px 14px", fontSize: 14, cursor: "pointer",
+    background: on ? "var(--surface-2)" : "var(--surface)",
+  });
+  const field = (): React.CSSProperties => ({ background: "var(--bg)", color: "var(--text)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "10px 14px", fontSize: 14, width: "100%" });
+
   const steps = [
-    { t: "Which chains?", body: CHAINS.map((c) => (
-      <label key={c} style={chip(s.chains.includes(c))}><input type="checkbox" checked={s.chains.includes(c)} onChange={() => tog("chains", c)} /> {c}</label>)) },
-    { t: "Which sectors?", body: SECTORS.map((c) => (
-      <label key={c} style={chip(s.sectors.includes(c))}><input type="checkbox" checked={s.sectors.includes(c)} onChange={() => tog("sectors", c)} /> {c}</label>)) },
-    { t: "Stage + token?", body: (
-      <div style={{ display: "grid", gap: 8 }}>
+    { t: "Where do you hunt?", sub: "Chains shape everything downstream.", body: CHAINS.map((c) => (
+      <label key={c} style={rowOpt(s.chains.includes(c))}><input type="checkbox" checked={s.chains.includes(c)} onChange={() => tog("chains", c)} style={{ accentColor: "var(--accent-2)" }} /> {c}<span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-faint)" }}>{s.chains.includes(c) ? "ON" : ""}</span></label>)) },
+    { t: "What sectors pull you?", sub: "Empty means everywhere — no bubble yet.", body: SECTORS.map((c) => (
+      <label key={c} style={rowOpt(s.sectors.includes(c))}><input type="checkbox" checked={s.sectors.includes(c)} onChange={() => tog("sectors", c)} style={{ accentColor: "var(--accent-2)" }} /> {c}<span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-faint)" }}>{s.sectors.includes(c) ? "ON" : ""}</span></label>)) },
+    { t: "How early?", sub: "Stage and token status bound the universe.", body: (
+      <div style={{ display: "grid", gap: 10 }}>
         <select aria-label="Stage" value={s.stages[0] ?? ""} onChange={(e) => setS({ ...s, stages: e.target.value ? [e.target.value as UserSettings["stages"][number]] : [] })} style={field()}>
           <option value="">Any stage</option>
           {["idea", "testnet", "mainnet-beta", "live", "established"].map((x) => <option key={x} value={x}>{x}</option>)}
@@ -36,38 +43,52 @@ export default function Onboarding() {
           {["none", "points", "tge-upcoming", "liquid"].map((x) => <option key={x} value={x}>{x}</option>)}
         </select>
       </div>) },
-    { t: "Role + narratives?", body: (
-      <div style={{ display: "grid", gap: 8 }}>
+    { t: "Who are you here as?", sub: "Role tunes what relevant means. Narratives seed the feed.", body: (
+      <div style={{ display: "grid", gap: 10 }}>
         <select aria-label="Role" value={s.role} onChange={(e) => setS({ ...s, role: e.target.value as UserSettings["role"] })} style={field()}>
           {["airdrop", "investor", "developer", "researcher", "creator"].map((x) => <option key={x} value={x}>{x}</option>)}
         </select>
         <input aria-label="Followed narratives, comma separated" placeholder="e.g. Restaking, DePIN" defaultValue={s.followedNarratives.join(", ")}
           onBlur={(e) => setS({ ...s, followedNarratives: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} style={field()} />
-        <label style={{ fontSize: 13, color: "var(--text-muted)" }}>Surprise me ({s.surpriseMe}%)
-          <input type="range" min={0} max={100} value={s.surpriseMe} onChange={(e) => setS({ ...s, surpriseMe: Number(e.target.value) })} style={{ width: "100%" }} />
+        <label style={{ fontSize: 13, color: "var(--text-muted)", display: "grid", gap: 6 }}>Surprise me · {s.surpriseMe}% outside your bubble
+          <input type="range" min={0} max={100} value={s.surpriseMe} onChange={(e) => setS({ ...s, surpriseMe: Number(e.target.value) })} style={{ width: "100%", accentColor: "var(--accent)" }} />
         </label>
       </div>) },
   ];
 
-  if (done) return <main style={wrap()}><h1 style={h1()}>You're set.</h1><p>{done}</p><a href="/">Go to Home →</a></main>;
+  if (done)
+    return (
+      <main style={{ padding: "48px 24px", display: "grid", gap: 12, maxWidth: 600, margin: "0 auto" }}>
+        <p style={{ margin: 0, fontSize: 11.5, letterSpacing: 1.8, textTransform: "uppercase", color: "var(--accent-2)" }}>Calibrated</p>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28 }}>Feed tuned to you.</h1>
+        <p style={{ color: "var(--text-muted)" }}>{done}</p>
+        <a href="/">Enter terminal →</a>
+      </main>
+    );
+
   return (
-    <main style={wrap()}>
-      <p style={eyebrow()}>Onboarding · step {step + 1} of 4</p>
-      <h1 style={h1()}>{steps[step].t}</h1>
+    <main style={{ padding: "48px 24px 80px", display: "grid", gap: 18, maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ display: "grid", gap: 10 }}>
+        <div style={{ display: "flex", gap: 6 }} aria-hidden>
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} style={{ flex: 1, height: 3, borderRadius: 999, background: i <= step ? "linear-gradient(90deg, var(--accent), var(--accent-2))" : "var(--surface-3)" }} />
+          ))}
+        </div>
+        <p style={{ margin: 0, fontSize: 11.5, letterSpacing: 1.8, textTransform: "uppercase", color: "var(--text-faint)" }}>Calibrating · {step + 1} / 4</p>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28, letterSpacing: -0.3 }}>{steps[step].t}</h1>
+        <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-muted)" }}>{steps[step].sub}</p>
+      </div>
       <div style={{ display: "grid", gap: 8 }}>{steps[step].body}</div>
-      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-        {step > 0 && <button onClick={() => setStep(step - 1)} style={btn(false)}>Back</button>}
-        {step < 3 ? <button onClick={() => setStep(step + 1)} style={btn(true)}>Next</button>
-          : <button onClick={finish} style={btn(true)}>Finish</button>}
-        <a href="/" style={{ marginLeft: "auto", alignSelf: "center", fontSize: 13 }}>Skip →</a>
+      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        {step > 0 && <button onClick={() => setStep(step - 1)} style={ghost()}>← Back</button>}
+        {step < 3
+          ? <button onClick={() => setStep(step + 1)} style={primary()}>Continue →</button>
+          : <button onClick={finish} style={primary()}>Tune my feed</button>}
+        <a href="/" style={{ marginLeft: "auto", fontSize: 13, color: "var(--text-faint)" }}>Skip</a>
       </div>
     </main>
   );
 }
 
-const wrap = (): React.CSSProperties => ({ padding: "40px 24px", display: "grid", gap: 14, maxWidth: 560, margin: "0 auto" });
-const h1 = (): React.CSSProperties => ({ margin: 0, fontFamily: "var(--font-display)", fontSize: 26 });
-const eyebrow = (): React.CSSProperties => ({ margin: 0, fontSize: 11.5, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--text-faint)" });
-const chip = (on: boolean): React.CSSProperties => ({ display: "flex", gap: 8, alignItems: "center", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "8px 12px", fontSize: 14, background: on ? "var(--surface-3)" : "transparent", cursor: "pointer" });
-const field = (): React.CSSProperties => ({ background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "8px 12px", fontSize: 14 });
-const btn = (p: boolean): React.CSSProperties => ({ background: p ? "var(--accent)" : "transparent", color: p ? "#06121f" : "var(--text)", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 18px", fontWeight: 650, cursor: "pointer" });
+const primary = (): React.CSSProperties => ({ background: "linear-gradient(92deg, var(--accent), var(--accent-2))", color: "#06121f", border: "none", borderRadius: 10, padding: "10px 22px", fontWeight: 700, cursor: "pointer" });
+const ghost = (): React.CSSProperties => ({ background: "transparent", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 18px", cursor: "pointer" });

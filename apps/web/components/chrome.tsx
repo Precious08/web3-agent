@@ -90,3 +90,32 @@ export function SectionHead({ title, hint, right }: { title: string; hint: strin
 }
 
 export const row = (): CSSProperties => ({ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" });
+
+const STRENGTH: Record<string, { pct: number; color: string }> = {
+  strong: { pct: 92, color: "var(--signal-strong)" },
+  emerging: { pct: 55, color: "var(--signal-emerging)" },
+  uncertain: { pct: 28, color: "var(--signal-uncertain)" },
+  noise: { pct: 10, color: "var(--signal-noise)" },
+};
+
+/** Signal strength bar: our convergence states as width + color. Presentation only. */
+export function SignalBar({ state, width = 120 }: { state: string; width?: number }) {
+  const s = STRENGTH[state] ?? STRENGTH.noise;
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+      <span aria-hidden style={{ width, height: 6, borderRadius: 999, background: "var(--surface-3)", overflow: "hidden", display: "inline-block" }}>
+        <span style={{ display: "block", width: `${s.pct}%`, height: "100%", borderRadius: 999, background: `linear-gradient(90deg, ${s.color}, color-mix(in srgb, ${s.color} 55%, transparent))`, boxShadow: `0 0 8px ${s.color}` }} />
+      </span>
+      <span className="tabular" style={{ fontSize: 12, color: "var(--text-muted)", minWidth: 34 }}>{s.pct}</span>
+    </span>
+  );
+}
+
+export function RankNum({ i }: { i: number }) {
+  const top = i < 3;
+  return (
+    <span className="tabular" style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, minWidth: 26, color: top ? "var(--text)" : "var(--text-faint)" }}>
+      {String(i + 1).padStart(2, "0")}
+    </span>
+  );
+}

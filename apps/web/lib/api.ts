@@ -21,3 +21,13 @@ export async function getWatchlist(): Promise<{ items: { kind: string; refId: st
     return { items: [{ kind: "project", refId: "helios-depin" }], live: false };
   }
 }
+
+export async function getSearch(q: string): Promise<{ items: Discovery[]; live: boolean }> {
+  if (!q.trim()) return { items: [], live: true };
+  try {
+    return { items: await api().search.query({ q }), live: true };
+  } catch {
+    const needle = q.toLowerCase();
+    return { items: FALLBACK.filter((d) => (d.title + d.why).toLowerCase().includes(needle)), live: false };
+  }
+}
