@@ -40,16 +40,21 @@ export default function Menu() {
       </button>
       <div className={`scrim${open ? " open" : ""}`} aria-hidden="true" onClick={() => setOpen(false)} />
       <aside className={`drawer${open ? " open" : ""}`} aria-hidden={!open} aria-label="Menu">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 6px 0 12px" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
             <span aria-hidden style={{ width: 12, height: 12, borderRadius: 999, background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)", boxShadow: "0 0 16px rgb(109 155 255 / 0.55)" }} />
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15 }}>Web3 Agent</span>
           </span>
+          <button aria-label="Close menu" onClick={() => setOpen(false)}
+            style={{ width: 38, height: 38, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--surface-2)", border: "1px solid var(--border-soft)", borderRadius: 10, color: "var(--text-muted)", fontSize: 17, cursor: "pointer" }}>
+            ✕
+          </button>
         </div>
         <div onClick={() => setOpen(false)}>
-          <Nav />
+          <Nav open={open} detailed />
         </div>
-        <div style={{ marginTop: "auto", padding: "12px 12px 0", borderTop: "1px solid var(--border-soft)" }}>
+        <div style={{ marginTop: "auto", padding: "12px 12px 0", borderTop: "1px solid var(--border-soft)", display: "grid", gap: 4 }}>
+          <p style={{ margin: 0, fontSize: 11.5, color: "var(--text-faint)", letterSpacing: 0.6 }}>DARK · TERMINAL</p>
           <a href="https://github.com/Precious08/web3-agent" style={{ fontSize: 12 }}>Source on GitHub ↗</a>
         </div>
       </aside>

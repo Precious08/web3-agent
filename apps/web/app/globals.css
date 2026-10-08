@@ -124,7 +124,9 @@ a:hover {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgb(0 0 0 / 0.62);
+  background: rgb(2 4 8 / 0.66);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -155,6 +157,10 @@ a:hover {
 .drawer.open {
   transform: none;
   visibility: visible;
+}
+
+.nav-link {
+  transition: opacity 0.3s ease, transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @media (max-width: 860px) {
