@@ -18,18 +18,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, letterSpacing: 0.2, fontSize: 15 }}>Web3 Agent</span>
             </a>
             <Nav />
-            <div style={{ marginTop: "auto", padding: "12px 12px 0", borderTop: "1px solid var(--border-soft)" }}>
-              <p style={{ margin: 0, fontSize: 11.5, color: "var(--text-faint)", letterSpacing: 0.6 }}>DARK · TERMINAL v1</p>
+            <div style={{ marginTop: "auto", padding: "12px 12px 0", borderTop: "1px solid var(--border-soft)", display: "grid", gap: 4 }}>
+              <p style={{ margin: 0, fontSize: 11.5, color: "var(--text-faint)", letterSpacing: 0.6 }}>TERMINAL · DARK ONLY</p>
+              <a href="https://github.com/Precious08/web3-agent" style={{ fontSize: 12 }}>Source on GitHub ↗</a>
             </div>
           </aside>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <header style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
+            <header style={{ display: "flex", alignItems: "center", gap: 10, rowGap: 8, flexWrap: "wrap", padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
               <form action="/search" role="search" className="topbar-search">
                 <input name="q" placeholder="Search…  (⌕)" aria-label="Search"
                   style={{ width: "100%", background: "var(--surface)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "10px 14px", fontSize: 14, color: "var(--text)" }} />
               </form>
-              <nav className="only-mobile" aria-label="Primary" style={{ gap: 14, fontSize: 13.5, alignItems: "center" }}>
-                <a href="/">Home</a><a href="/discover">Discover</a><a href="/settings">Settings</a>
+              <nav className="only-mobile" aria-label="Primary" style={{ gap: 4, fontSize: 13.5, alignItems: "center", width: "100%", paddingBottom: 2 }}>
+                {[
+                  ["Home", "/"], ["Discover", "/discover"], ["Early", "/discover?view=early"], ["Settings", "/settings"],
+                ].map(([label, href]) => (
+                  <a key={href + label} href={href} style={{ padding: "8px 12px", borderRadius: 999, border: "1px solid var(--border-soft)", background: "var(--surface)", textDecoration: "none", color: "var(--text-muted)", whiteSpace: "nowrap" }}>{label}</a>
+                ))}
               </nav>
               <span className="hide-sm" style={{ marginLeft: "auto", fontSize: 11.5, letterSpacing: 1.2, color: "var(--text-faint)", border: "1px solid var(--border-soft)", borderRadius: 999, padding: "5px 12px", whiteSpace: "nowrap" }}>
                 DARK · TERMINAL
