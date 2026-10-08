@@ -21,12 +21,40 @@ body {
   min-height: 100vh;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
+  transition: color 0.12s ease;
 }
 a:hover {
   text-decoration: underline;
+}
+
+button {
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+button:hover {
+  filter: brightness(1.08);
+}
+button:active {
+  transform: scale(0.97);
+}
+
+::placeholder {
+  color: var(--text-faint);
+  opacity: 1;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgb(109 155 255 / 0.18);
 }
 
 ::selection {
@@ -52,7 +80,8 @@ a:hover {
 }
 .lift:hover {
   transform: translateY(-2px);
-  border-color: var(--border);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border-soft));
+  box-shadow: 0 14px 40px rgb(0 0 0 / 0.45), 0 0 24px rgb(109 155 255 / 0.08);
 }
 
 .tabular {

@@ -49,7 +49,7 @@ export function KindTag({ kind }: { kind: string }) {
 export function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: "grid", gap: 2 }}>
-      <span style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700 }}>{value}</span>
+      <span className="tabular" style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700 }}>{value}</span>
       <span style={{ fontSize: 12, color: "var(--text-faint)" }}>{label}</span>
     </div>
   );
