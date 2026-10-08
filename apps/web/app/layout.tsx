@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </form>
               <nav className="only-mobile" aria-label="Primary" style={{ gap: 4, fontSize: 13.5, alignItems: "center", width: "100%", paddingBottom: 2 }}>
                 {[
-                  ["Home", "/"], ["Discover", "/discover"], ["Early", "/discover?view=early"], ["Settings", "/settings"],
+                  ["Home", "/"], ["Discover", "/discover"], ["Early", "/discover?view=early"], ["Ask", "/ask"], ["Settings", "/settings"],
                 ].map(([label, href]) => (
                   <a key={href + label} href={href} style={{ padding: "8px 12px", borderRadius: 999, border: "1px solid var(--border-soft)", background: "var(--surface)", textDecoration: "none", color: "var(--text-muted)", whiteSpace: "nowrap" }}>{label}</a>
                 ))}

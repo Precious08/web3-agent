@@ -50,8 +50,8 @@ export default async function Home() {
         <SectionHead title="Continue" hint="Pick up the thread." />
         <div style={row()}>
           <SignalBadge state="emerging" label="Helios DePIN" />
+          <a href="/ask" style={{ fontSize: 13 }}>Ask a question →</a>
           <a href="/onboarding" style={{ fontSize: 13 }}>Retake onboarding →</a>
-          <a href="/design" style={{ fontSize: 13 }}>Design language →</a>
         </div>
       </section>
     </main>

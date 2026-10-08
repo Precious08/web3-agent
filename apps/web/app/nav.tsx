@@ -13,6 +13,7 @@ const GROUPS: { caption: string; links: Link[] }[] = [
       { href: "/", label: "Overview", icon: "◈", match: (p) => p === "/" },
       { href: "/discover?view=all", label: "Discover", icon: "◎", match: (p) => p === "/discover" },
       { href: "/discover?view=early", label: "Early radar", icon: "✦", match: () => false },
+      { href: "/ask", label: "Ask", icon: "?", match: (p) => p === "/ask" },
     ],
   },
   {
