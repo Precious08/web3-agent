@@ -1,11 +1,10 @@
-// tRPC proxy client for server components (Phase 6a).
-// Talks to apps/api standalone on NEXT_PUBLIC_API_URL (default :4000).
-// Callers MUST catch and fall back to ./fallback (API may be down; build has no API).
+// tRPC client (Phase 7a): browser → same-origin /api/trpc (never CORS);
+// server components → UPSTREAM directly (relative URLs don't resolve server-side).
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "@web3-agent/api";
 
+const url = typeof window === "undefined" ? process.env.API_URL ?? "http://localhost:4000" : "/api/trpc";
+
 export function api() {
-  return createTRPCProxyClient<AppRouter>({
-    links: [httpBatchLink({ url: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000"}` })],
-  });
+  return createTRPCProxyClient<AppRouter>({ links: [httpBatchLink({ url })] });
 }

@@ -20,9 +20,9 @@ export function saveLocal(s: UserSettings) {
 
 export async function syncToApi(s: UserSettings): Promise<boolean> {
   try {
-    const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+    // Same-origin proxy (Phase 7a) — no CORS, works from the browser.
     const input = { "0": { json: s } };
-    const r = await fetch(`${base}/settingsUpdate?batch=1&input=${encodeURIComponent(JSON.stringify(input))}`, { method: "GET" });
+    const r = await fetch(`/api/trpc/settingsUpdate?batch=1&input=${encodeURIComponent(JSON.stringify(input))}`, { method: "GET" });
     return r.ok;
   } catch {
     return false;
