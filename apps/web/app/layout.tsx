@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import Nav from "./nav";
+import Tabs from "./tabs";
 
 export const metadata: Metadata = {
   title: "Web3 Agent — Research Terminal",
@@ -24,23 +26,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </aside>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <header style={{ display: "flex", alignItems: "center", gap: 10, rowGap: 8, flexWrap: "wrap", padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
+            <header style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
               <form action="/search" role="search" className="topbar-search">
                 <input name="q" placeholder="Search…  (⌕)" aria-label="Search"
                   style={{ width: "100%", background: "var(--surface)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "10px 14px", fontSize: 14, color: "var(--text)" }} />
               </form>
-              <nav className="only-mobile" aria-label="Primary" style={{ gap: 4, fontSize: 13.5, alignItems: "center", width: "100%", paddingBottom: 2 }}>
-                {[
-                  ["Home", "/"], ["Discover", "/discover"], ["Early", "/discover?view=early"], ["Ask", "/ask"], ["Settings", "/settings"],
-                ].map(([label, href]) => (
-                  <a key={href + label} href={href} style={{ padding: "8px 12px", borderRadius: 999, border: "1px solid var(--border-soft)", background: "var(--surface)", textDecoration: "none", color: "var(--text-muted)", whiteSpace: "nowrap" }}>{label}</a>
-                ))}
-              </nav>
               <span className="hide-sm" style={{ marginLeft: "auto", fontSize: 11.5, letterSpacing: 1.2, color: "var(--text-faint)", border: "1px solid var(--border-soft)", borderRadius: 999, padding: "5px 12px", whiteSpace: "nowrap" }}>
                 DARK · TERMINAL
               </span>
             </header>
             {children}
+            <div className="tab-spacer" aria-hidden />
+            <Suspense>
+              <Tabs />
+            </Suspense>
           </div>
         </div>
       </body>
