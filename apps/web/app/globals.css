@@ -98,6 +98,66 @@ a:hover {
   }
 }
 
+@media (max-width: 560px) {
+  .hide-sm {
+    display: none !important;
+  }
+}
+
+/* Responsive page shell: fluid padding, full-bleed on phones, capped on desktop. */
+.page {
+  padding: 28px 24px 72px;
+  display: grid;
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+.page-narrow {
+  max-width: 640px;
+}
+@media (max-width: 560px) {
+  .page {
+    padding: 20px 14px 56px;
+    gap: 20px;
+  }
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 5.4vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.4px;
+}
+
+.stats-strip {
+  display: flex;
+  gap: 28px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+  row-gap: 12px;
+}
+@media (max-width: 560px) {
+  .stats-strip {
+    gap: 20px;
+  }
+}
+
+.topbar-search {
+  flex: 1;
+  max-width: 460px;
+  display: flex;
+  min-width: 0;
+}
+@media (max-width: 560px) {
+  .topbar-search {
+    max-width: none;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

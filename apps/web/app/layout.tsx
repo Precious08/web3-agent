@@ -23,15 +23,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </aside>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <header style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 24px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
-              <form action="/search" role="search" style={{ flex: 1, maxWidth: 460, display: "flex" }}>
-                <input name="q" placeholder="Search projects, narratives, chains…  (⌕)" aria-label="Search"
-                  style={{ width: "100%", background: "var(--surface)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "8px 14px", fontSize: 13.5, color: "var(--text)" }} />
+            <header style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
+              <form action="/search" role="search" className="topbar-search">
+                <input name="q" placeholder="Search…  (⌕)" aria-label="Search"
+                  style={{ width: "100%", background: "var(--surface)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "10px 14px", fontSize: 14, color: "var(--text)" }} />
               </form>
-              <nav className="only-mobile" aria-label="Primary" style={{ gap: 12, fontSize: 13 }}>
+              <nav className="only-mobile" aria-label="Primary" style={{ gap: 14, fontSize: 13.5, alignItems: "center" }}>
                 <a href="/">Home</a><a href="/discover">Discover</a><a href="/settings">Settings</a>
               </nav>
-              <span style={{ marginLeft: "auto", fontSize: 11.5, letterSpacing: 1.2, color: "var(--text-faint)", border: "1px solid var(--border-soft)", borderRadius: 999, padding: "5px 12px", whiteSpace: "nowrap" }}>
+              <span className="hide-sm" style={{ marginLeft: "auto", fontSize: 11.5, letterSpacing: 1.2, color: "var(--text-faint)", border: "1px solid var(--border-soft)", borderRadius: 999, padding: "5px 12px", whiteSpace: "nowrap" }}>
                 DARK · TERMINAL
               </span>
             </header>

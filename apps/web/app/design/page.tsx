@@ -3,7 +3,7 @@ import { Showcase, Eyebrow } from "./_showcase";
 
 export default function DesignPage() {
   return (
-    <main style={{ padding: "40px 24px 72px", display: "grid", gap: 32, maxWidth: 760, margin: "0 auto" }}>
+    <main className="page" style={{ maxWidth: 760 }}>
       <div style={{ display: "grid", gap: 10 }}>
         <Eyebrow>Phase 1 · Design language</Eyebrow>
         <h1

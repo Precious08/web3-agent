@@ -9,7 +9,7 @@ export default async function Discover({ searchParams }: { searchParams: { view?
   const view = searchParams.view === "early" ? "early" : "foryou";
   const { items, live } = await getDiscover(view);
   return (
-    <main style={{ padding: "28px 24px 72px", display: "grid", gap: 22, maxWidth: 980, margin: "0 auto" }}>
+    <main className="page">
       <div style={{ display: "grid", gap: 12 }}>
         <Eyebrow>{view === "early" ? "Early radar · pre-consensus" : "Discover · ranked stream"}</Eyebrow>
         <div style={row()}>

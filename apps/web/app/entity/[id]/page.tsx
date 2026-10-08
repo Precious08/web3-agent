@@ -30,22 +30,22 @@ export default async function EntityPage({ params }: { params: { id: string } })
   const strong = d.signals.some((s) => s.state === "strong");
   const conv = new Set(d.signals.map((s) => s.type)).size;
   return (
-    <main style={{ padding: "28px 24px 72px", display: "grid", gap: 24, maxWidth: 980, margin: "0 auto" }}>
+    <main className="page">
       <div style={{ display: "grid", gap: 10 }}>
         <div style={row()}>
           <Eyebrow>{d.kind} · Dossier</Eyebrow>
           <KindTag kind={d.kind} />
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
-          <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28, letterSpacing: -0.3 }}>{d.title}</h1>
+          <h1 className="hero-title">{d.title}</h1>
           <SignalBadge state={strong ? "strong" : "emerging"} />
         </div>
         <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6, maxWidth: 640 }}>{d.why}</p>
-        <div style={{ display: "flex", gap: 28, alignItems: "center", padding: "12px 0", borderTop: "1px solid var(--border-soft)", borderBottom: "1px solid var(--border-soft)", flexWrap: "wrap" }}>
+        <div className="stats-strip" style={{ alignItems: "center" }}>
           <Stat label="Converging" value={String(conv)} />
           <Stat label="Sources" value={String(d.evidence.length)} />
           <Stat label="Counters" value={String(d.counters.length)} />
-          <SignalBar state={strong ? "strong" : "emerging"} width={140} />
+          <span className="hide-sm"><SignalBar state={strong ? "strong" : "emerging"} width={140} /></span>
         </div>
       </div>
 

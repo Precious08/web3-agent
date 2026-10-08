@@ -11,17 +11,17 @@ export default async function Home() {
   const strong = items.filter((d) => d.signals.some((s) => s.state === "strong")).length;
   const sources = items.reduce((n, d) => n + d.evidence.length, 0);
   return (
-    <main style={{ padding: "28px 24px 72px", display: "grid", gap: 28, maxWidth: 980, margin: "0 auto" }}>
+    <main className="page" style={{ gap: 28 }}>
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
         <div style={{ display: "grid", gap: 6 }}>
           <Eyebrow>Overview</Eyebrow>
-          <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 26, letterSpacing: -0.3 }}>Good evening, hunter.</h1>
+          <h1 className="hero-title">Good evening, hunter.</h1>
           <div style={row()}>
             <StatusPill live={live} />
             {!live && <span style={{ fontSize: 12.5, color: "var(--text-faint)" }}>Start it: pnpm --filter @web3-agent/api dev</span>}
           </div>
         </div>
-        <div style={{ display: "flex", gap: 28 }}>
+        <div className="stats-strip">
           <Stat label="Strong" value={String(strong)} />
           <Stat label="Tracked" value={String(watch.items.length)} />
           <Stat label="Sources" value={String(sources)} />

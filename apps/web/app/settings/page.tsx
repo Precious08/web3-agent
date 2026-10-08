@@ -12,7 +12,7 @@ export default async function SettingsPage() {
     initial = await api().settingsGet.query();
   } catch { /* offline → defaults, form loads local */ }
   return (
-    <main style={{ padding: "44px 24px 80px", display: "grid", gap: 20, maxWidth: 640, margin: "0 auto" }}>
+    <main className="page page-narrow" style={{ gap: 20 }}>
       <div style={{ display: "grid", gap: 8 }}>
         <Eyebrow>Control center · basic</Eyebrow>
         <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 32, letterSpacing: -0.3 }}>Tune your <span style={{ background: "linear-gradient(92deg, var(--accent), var(--accent-2))", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>signal.</span></h1>

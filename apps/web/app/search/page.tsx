@@ -9,10 +9,10 @@ export default async function Search({ searchParams }: { searchParams: { q?: str
   const q = searchParams.q ?? "";
   const { items, live } = await getSearch(q);
   return (
-    <main style={{ padding: "44px 24px 80px", display: "grid", gap: 24, maxWidth: 780, margin: "0 auto" }}>
+    <main className="page">
       <div style={{ display: "grid", gap: 12 }}>
         <Eyebrow>Search</Eyebrow>
-        <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 30, letterSpacing: -0.3 }}>
+        <h1 className="hero-title">
           {q ? <>{q}</> : "Ask anything."}
         </h1>
         <div style={row()}>

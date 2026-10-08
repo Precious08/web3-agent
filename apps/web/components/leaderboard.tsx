@@ -23,7 +23,7 @@ export function BoardRow({ i, d }: { i: number; d: Discovery }) {
       </span>
       <span className="hide-mobile" style={{ display: "flex", gap: 10, alignItems: "center" }}>
         <SignalBadge state={st} />
-        <SignalBar state={st} width={96} />
+        <span className="hide-sm"><SignalBar state={st} width={96} /></span>
       </span>
       <span className="hide-mobile tabular" style={{ fontSize: 13, color: "var(--text-muted)", minWidth: 58 }}>{d.evidence.length} src</span>
       <span className="hide-mobile tabular" style={{ fontSize: 13, color: "var(--text-muted)", minWidth: 58 }}>{d.signals.length} sig</span>

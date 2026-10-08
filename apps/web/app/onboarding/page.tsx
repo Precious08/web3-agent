@@ -58,7 +58,7 @@ export default function Onboarding() {
 
   if (done)
     return (
-      <main style={{ padding: "48px 24px", display: "grid", gap: 12, maxWidth: 600, margin: "0 auto" }}>
+      <main className="page page-narrow" style={{ gap: 12 }}>
         <p style={{ margin: 0, fontSize: 11.5, letterSpacing: 1.8, textTransform: "uppercase", color: "var(--accent-2)" }}>Calibrated</p>
         <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28 }}>Feed tuned to you.</h1>
         <p style={{ color: "var(--text-muted)" }}>{done}</p>
@@ -67,7 +67,7 @@ export default function Onboarding() {
     );
 
   return (
-    <main style={{ padding: "48px 24px 80px", display: "grid", gap: 18, maxWidth: 600, margin: "0 auto" }}>
+    <main className="page page-narrow" style={{ gap: 18 }}>
       <div style={{ display: "grid", gap: 10 }}>
         <div style={{ display: "flex", gap: 6 }} aria-hidden>
           {[0, 1, 2, 3].map((i) => (
