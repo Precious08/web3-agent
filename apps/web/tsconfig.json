@@ -10,6 +10,12 @@
     "paths": {
       "@web3-agent/ui": [
         "../../packages/ui/src/index.ts"
+      ],
+      "@web3-agent/api": [
+        "../../apps/api/src/index.ts"
+      ],
+      "@web3-agent/types": [
+        "../../packages/types/src/index.ts"
       ]
     },
     "allowJs": true,
