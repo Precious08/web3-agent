@@ -5,7 +5,7 @@ import Menu from "./menu";
 
 export const metadata: Metadata = {
   title: "Web3 Agent — Research Terminal",
-  description: "Web3 research and alpha discovery terminal. Dark-only.",
+  description: "Web3 research and alpha discovery — what matters, why it matters.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

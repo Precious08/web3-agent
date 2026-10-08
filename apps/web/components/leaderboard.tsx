@@ -49,7 +49,7 @@ export function Board({ items }: { items: Discovery[] }) {
       {items.length === 0 && (
         <div style={{ padding: "28px 18px", display: "grid", gap: 6, justifyItems: "center", textAlign: "center" }}>
           <span aria-hidden style={{ fontSize: 20, color: "var(--text-faint)" }}>◌</span>
-          <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-muted)" }}>Nothing here yet — tune filters or check back after the next sync.</p>
+          <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-muted)" }}>Nothing here yet — check back soon, the stream refreshes daily.</p>
         </div>
       )}
     </div>

@@ -43,7 +43,7 @@ export default function Onboarding() {
           {["none", "points", "tge-upcoming", "liquid"].map((x) => <option key={x} value={x}>{x}</option>)}
         </select>
       </div>) },
-    { t: "Who are you here as?", sub: "Role tunes what relevant means. Narratives seed the feed.", body: (
+    { t: "Who are you here as?", sub: "Role tunes what relevant means. Narratives shape the feed.", body: (
       <div style={{ display: "grid", gap: 10 }}>
         <select aria-label="Role" value={s.role} onChange={(e) => setS({ ...s, role: e.target.value as UserSettings["role"] })} style={field()}>
           {["airdrop", "investor", "developer", "researcher", "creator"].map((x) => <option key={x} value={x}>{x}</option>)}
@@ -62,7 +62,7 @@ export default function Onboarding() {
         <p style={{ margin: 0, fontSize: 11.5, letterSpacing: 1.8, textTransform: "uppercase", color: "var(--accent-2)" }}>Calibrated</p>
         <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 28 }}>Feed tuned to you.</h1>
         <p style={{ color: "var(--text-muted)" }}>{done}</p>
-        <a href="/">Enter terminal →</a>
+        <a href="/">See your stream →</a>
       </main>
     );
 
