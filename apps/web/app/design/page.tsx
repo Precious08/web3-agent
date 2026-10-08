@@ -5,7 +5,7 @@ export default function DesignPage() {
   return (
     <main className="page" style={{ maxWidth: 760 }}>
       <div style={{ display: "grid", gap: 10 }}>
-        <Eyebrow>Phase 1 · Design language</Eyebrow>
+        <Eyebrow>Design language</Eyebrow>
         <h1
           style={{
             margin: 0,
@@ -29,8 +29,7 @@ export default function DesignPage() {
           , not noise.
         </h1>
         <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65 }}>
-          Dark-only preview of badges, discovery cards, evidence discipline and comparison —
-          before any backend exists.
+          A live preview of badges, discovery cards, evidence discipline and comparison.
         </p>
       </div>
       <Showcase />

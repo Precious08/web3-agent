@@ -17,7 +17,7 @@ export default function Onboarding() {
 
   const finish = async () => {
     saveLocal(s);
-    setDone((await syncToApi(s)) ? "Saved + synced to API." : "Saved locally (API offline — will sync later).");
+    setDone((await syncToApi(s)) ? "Saved and synced." : "Saved on this device — syncs when you're back online.");
   };
 
   const rowOpt = (on: boolean): React.CSSProperties => ({

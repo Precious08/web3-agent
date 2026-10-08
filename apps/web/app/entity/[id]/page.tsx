@@ -13,7 +13,7 @@ function derivedEdges(whyCodes: string[], title: string) {
       const [, v] = c.split(":");
       return {
         from: title, to: v, relation: c.startsWith("matches:") ? "builds-on" : "adjacent-to",
-        confidence: "possible" as const, why: `Derived from ${c} — unverified until the edge store lands.`,
+        confidence: "possible" as const, why: `Suggested automatically from ${c} — treat as unverified.`,
       };
     });
 }
@@ -70,7 +70,7 @@ export default async function EntityPage({ params }: { params: { id: string } })
       </section>
 
       <section style={{ display: "grid", gap: 10 }}>
-        <SectionHead title="Connections" hint="Derived, unverified — edge store lands in Phase 7." />
+        <SectionHead title="Connections" hint="Suggested automatically — always treated as unverified." />
         <div style={{ ...box, padding: "4px 16px" }}>
           {derivedEdges(d.whyCodes, d.title).map((e) => (
             <ConnectionEdge key={`${e.from}${e.to}`} {...e} />

@@ -35,6 +35,14 @@ export function BoardRow({ i, d }: { i: number; d: Discovery }) {
 export function Board({ items }: { items: Discovery[] }) {
   return (
     <div style={{ border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "var(--surface)", overflow: "hidden" }}>
+      <div aria-hidden style={{ display: "grid", gridTemplateColumns: "28px minmax(0,1fr) auto auto auto 16px", gap: 12, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--border-soft)", fontSize: 10.5, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--text-faint)" }}>
+        <span>#</span>
+        <span>Project</span>
+        <span className="hide-mobile">Signal</span>
+        <span className="hide-mobile tabular">Src</span>
+        <span className="hide-mobile tabular">Sig</span>
+        <span />
+      </div>
       {items.map((d, i) => (
         <BoardRow key={d.id} i={i} d={d} />
       ))}

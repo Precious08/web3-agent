@@ -16,7 +16,7 @@ export default async function SettingsPage() {
       <div style={{ display: "grid", gap: 8 }}>
         <Eyebrow>Control center · basic</Eyebrow>
         <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 32, letterSpacing: -0.3 }}>Tune your <span style={{ background: "linear-gradient(92deg, var(--accent), var(--accent-2))", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>signal.</span></h1>
-        <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65 }}>Everything that decides what you see lives here — and every change takes effect immediately. Advanced tuning stays P2 (PRD Sec 48).</p>
+        <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65 }}>Everything that decides what you see lives here — and every change takes effect immediately. Power-user tuning arrives later; this is the essentials edition.</p>
       </div>
       <Form initial={initial} />
     </main>

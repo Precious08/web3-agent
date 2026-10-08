@@ -1,31 +1,24 @@
 // Home: terminal overview. Same data (For You, watchlist, continue) — ranked rows, no hero cards.
 import { SignalBadge } from "@web3-agent/ui";
 import { getDiscover, getWatchlist } from "../lib/api";
-import { Eyebrow, StatusPill, Stat, SectionHead, row } from "../components/chrome";
+import { Eyebrow, StatusPill, SectionHead, row } from "../components/chrome";
 import { Board } from "../components/leaderboard";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [{ items, live }, watch] = await Promise.all([getDiscover("foryou"), getWatchlist()]);
-  const strong = items.filter((d) => d.signals.some((s) => s.state === "strong")).length;
-  const sources = items.reduce((n, d) => n + d.evidence.length, 0);
   return (
     <main className="page" style={{ gap: 28 }}>
-      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ display: "grid", gap: 6 }}>
-          <Eyebrow>Overview</Eyebrow>
-          <h1 className="hero-title">Good evening, hunter.</h1>
-          <div style={row()}>
-            <StatusPill live={live} />
-            {!live && <span style={{ fontSize: 12.5, color: "var(--text-faint)" }}>Start it: pnpm --filter @web3-agent/api dev</span>}
-          </div>
+      <div style={{ display: "grid", gap: 10, maxWidth: 640 }}>
+        <Eyebrow>Overview</Eyebrow>
+        <h1 className="hero-title">Good evening, hunter.</h1>
+        <div style={row()}>
+          <StatusPill live={live} />
         </div>
-        <div className="stats-strip">
-          <Stat label="Strong" value={String(strong)} />
-          <Stat label="Tracked" value={String(watch.items.length)} />
-          <Stat label="Sources" value={String(sources)} />
-        </div>
+        <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65 }}>
+          Your ranked stream — strongest convergence first. <a href="/discover">Open Discover →</a>
+        </p>
       </div>
 
       <section style={{ display: "grid", gap: 12 }}>

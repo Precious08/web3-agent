@@ -59,7 +59,7 @@ export function StatusPill({ live }: { live: boolean }) {
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "var(--text-muted)", border: "1px solid var(--border-soft)", borderRadius: 999, padding: "5px 13px", background: "var(--surface)" }}>
       <span className="pulse-dot" aria-hidden style={{ width: 7, height: 7, borderRadius: 999, background: live ? "var(--signal-strong)" : "var(--signal-uncertain)", boxShadow: live ? "0 0 10px var(--signal-strong)" : "none" }} />
-      {live ? "Live · API connected" : "Offline · fallback data"}
+      {live ? "Live · connected" : "Offline · saved highlights"}
     </span>
   );
 }

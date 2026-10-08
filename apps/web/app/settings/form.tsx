@@ -42,7 +42,7 @@ export default function Form({ initial }: { initial: UserSettings }) {
 
   const save = async () => {
     saveLocal(s);
-    setMsg((await syncToApi(s)) ? "Saved + synced to API." : "Saved locally (API offline — will sync later).");
+    setMsg((await syncToApi(s)) ? "Saved and synced." : "Saved on this device — syncs when you're back online.");
   };
   const reset = () => {
     setS({ ...DEFAULT_SETTINGS });

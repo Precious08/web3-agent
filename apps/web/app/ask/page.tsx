@@ -44,7 +44,7 @@ export default async function Ask({ searchParams }: { searchParams: { q?: string
 
       {!q && (
         <section style={{ display: "grid", gap: 10 }}>
-          <SectionHead title="Try" hint="Example investigations from the PRD." />
+          <SectionHead title="Try" hint="Example investigations." />
           <div style={{ display: "grid", gap: 8 }}>
             {EXAMPLES.map((e) => (
               <a key={e} href={`/ask?q=${encodeURIComponent(e)}`} className="rowhover"
@@ -58,9 +58,9 @@ export default async function Ask({ searchParams }: { searchParams: { q?: string
 
       {q && !ans && (
         <section style={{ display: "grid", gap: 10 }}>
-          <SectionHead title="API offline" hint="Answers need the API running." />
-          <p style={{ color: "var(--text-muted)", fontSize: 14 }}>
-            Start it in a second terminal: <code>pnpm --filter @web3-agent/api dev</code>, then reload. Your question is kept in the box above.
+          <SectionHead title="You're offline" hint="Answers need a live connection." />
+          <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.65 }}>
+            Nothing to show yet — answers are researched live, never guessed. Reconnect and ask again; your question is kept in the box above.
           </p>
         </section>
       )}
