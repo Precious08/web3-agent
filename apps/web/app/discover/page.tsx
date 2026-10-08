@@ -22,7 +22,7 @@ export default async function Discover({ searchParams }: { searchParams: { view?
       </div>
       <div style={{ display: "grid", gap: 14 }}>
         {items.map((d) => (
-          <a key={d.id} href={`/entity/${d.id}`} style={{ textDecoration: "none" }}>
+          <div key={d.id} style={{ display: "grid", gap: 6 }}>
           <DiscoveryCard
             key={d.id}
             item={{
@@ -33,7 +33,8 @@ export default async function Discover({ searchParams }: { searchParams: { view?
                 counter: d.counters[0] ?? "", next: d.next[0] ?? "", reasons: d.whyCodes,
               }}
             />
-          </a>
+            <a href={`/entity/${d.id}`} style={{ fontSize: 13, justifySelf: "start" }}>Open intelligence →</a>
+          </div>
         ))}
       </div>
     </main>
