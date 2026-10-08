@@ -143,6 +143,7 @@ a:hover {
   bottom: 0;
   z-index: 70;
   width: min(320px, 84vw);
+  background: #05070c;
   background: var(--bg-0);
   border-right: 1px solid var(--border-soft);
   box-shadow: 24px 0 64px rgb(0 0 0 / 0.5);
