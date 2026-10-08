@@ -1,0 +1,162 @@
+// Prisma schema — 14 tables (Phase 3a). Postgres + pgvector on Neon (ADR-003).
+// pgvector: embeddings stored via `vector` extension; queried with raw SQL
+// (see ADR-003 consequences) until Prisma ships first-class vector ops.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  settings  UserSettings?
+  watchlist WatchItem[]
+  alerts    Alert[]
+  sessions  ResearchSession[]
+}
+
+model UserSettings {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stages               String[] @default([])
+  sectors              String[] @default([])
+  chains               String[] @default([])
+  tokenStatus          String[] @default([])
+  role                 String   @default("researcher")
+  followedNarratives   String[] @default([])
+  mutedNarratives      String[] @default([])
+  blocked              String[] @default([])
+  surpriseMe           Int      @default(25)
+  sensitivity          String   @default("balanced")
+  globalAlertThreshold String   @default("moderate")
+  maxPerDay            Int      @default(10)
+  saveHistory          Boolean  @default(true)
+  updatedAt            DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  symbol      String?
+  chain       String?
+  contract    String?
+  stage       String   @default("idea")
+  sector      String?
+  tokenStatus String   @default("none")
+  summary     String?
+  fetchedAt   DateTime @default(now())
+  signals     Signal[]
+  watchers    WatchItem[]
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  projectId String?
+  symbol    String
+  liquidity Float?
+  volume24h Float?
+  fetchedAt DateTime @default(now())
+}
+
+model Narrative {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  summary   String?
+  fetchedAt DateTime @default(now())
+}
+
+model Ecosystem {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  summary   String?
+  fetchedAt DateTime @default(now())
+}
+
+model Person {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  fetchedAt DateTime @default(now())
+}
+
+model Signal {
+  id        String   @id @default(cuid())
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type      String
+  state     String   @default("uncertain")
+  magnitude String?
+  evidence  Evidence[] @relation("SignalEvidence")
+  createdAt DateTime @default(now())
+}
+
+model Evidence {
+  id       String   @id @default(cuid())
+  title    String
+  url      String
+  source   String
+  author   String?
+  fetchedAt DateTime @default(now())
+  signals  Signal[] @relation("SignalEvidence")
+}
+
+model Edge {
+  id         String @id @default(cuid())
+  fromKind   String
+  fromId     String
+  toKind     String
+  toId       String
+  relation   String
+  confidence String @default("possible")
+  why        String?
+  @@index([fromKind, fromId])
+  @@index([toKind, toId])
+}
+
+model WatchItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String
+  refId     String
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  @@unique([userId, kind, refId])
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String?
+  threshold String   @default("moderate")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ResearchSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query     String
+  createdAt DateTime @default(now())
+  events    ResearchEvent[]
+}
+
+model ResearchEvent {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   ResearchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  kind      String
+  payload   String
+  createdAt DateTime @default(now())
+}
