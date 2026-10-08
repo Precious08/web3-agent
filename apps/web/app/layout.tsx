@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import "./globals.css";
 import Nav from "./nav";
-import Tabs from "./tabs";
+import Menu from "./menu";
 
 export const metadata: Metadata = {
   title: "Web3 Agent — Research Terminal",
@@ -27,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </aside>
           <div style={{ flex: 1, minWidth: 0 }}>
             <header style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border-soft)", background: "rgb(5 7 12 / 0.72)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
+              <Menu />
               <form action="/search" role="search" className="topbar-search">
                 <input name="q" placeholder="Search…  (⌕)" aria-label="Search"
                   style={{ width: "100%", background: "var(--surface)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "10px 14px", fontSize: 14, color: "var(--text)" }} />
@@ -36,10 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </span>
             </header>
             {children}
-            <div className="tab-spacer" aria-hidden />
-            <Suspense>
-              <Tabs />
-            </Suspense>
           </div>
         </div>
       </body>
