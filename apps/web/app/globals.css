@@ -38,3 +38,19 @@ a:hover {
   outline-offset: 2px;
   border-radius: 6px;
 }
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.pulse-dot {
+  animation: pulse-soft 2.2s ease-in-out infinite;
+}
+
+.lift {
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  border-color: var(--border);
+}
