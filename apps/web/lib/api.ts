@@ -22,6 +22,25 @@ export async function getWatchlist(): Promise<{ items: { kind: string; refId: st
   }
 }
 
+export async function getHistory(): Promise<{ items: { id: string; label: string; href: string; at: string }[]; live: boolean }> {
+  try {
+    return { items: await api().historyList.query(), live: true };
+  } catch {
+    return { items: [], live: false };
+  }
+}
+
+export type AlertView = { id: string; refId: string; title: string; body: string; read: boolean; at: string };
+
+export async function getAlerts(): Promise<{ items: AlertView[]; live: boolean }> {
+  try {
+    await api().alertsDigest.query();
+    return { items: await api().alertsList.query(), live: true };
+  } catch {
+    return { items: [], live: false };
+  }
+}
+
 export async function getSearch(q: string): Promise<{ items: Discovery[]; live: boolean }> {
   if (!q.trim()) return { items: [], live: true };
   try {

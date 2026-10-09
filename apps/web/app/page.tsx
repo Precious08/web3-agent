@@ -1,13 +1,13 @@
 // Home: terminal overview. Same data (For You, watchlist, continue) — ranked rows, no hero cards.
 import { SignalBadge } from "@web3-agent/ui";
-import { getDiscover, getWatchlist } from "../lib/api";
+import { getDiscover, getWatchlist, getHistory } from "../lib/api";
 import { Eyebrow, StatusPill, SectionHead, row } from "../components/chrome";
 import { Board } from "../components/leaderboard";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [{ items, live }, watch] = await Promise.all([getDiscover("foryou"), getWatchlist()]);
+  const [{ items, live }, watch, hist] = await Promise.all([getDiscover("foryou"), getWatchlist(), getHistory()]);
   return (
     <main className="page" style={{ gap: 28 }}>
       <div style={{ display: "grid", gap: 10, maxWidth: 640 }}>
@@ -40,9 +40,15 @@ export default async function Home() {
       </section>
 
       <section style={{ display: "grid", gap: 12 }}>
-        <SectionHead title="Continue" hint="Pick up the thread." />
+        <SectionHead title="Continue" hint={hist.live && hist.items.length > 0 ? "Your recent trail — resumes where you left off." : "Pick up the thread."} />
         <div style={row()}>
-          <SignalBadge state="emerging" label="Helios DePIN" />
+          {hist.items.slice(0, 5).map((h) => (
+            <a key={h.id} href={h.href}
+              style={{ border: "1px solid var(--border-soft)", borderRadius: 999, padding: "6px 14px", fontSize: 13, color: "var(--text)", textDecoration: "none", background: "var(--surface)", maxWidth: 280, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {h.label}
+            </a>
+          ))}
+          {hist.items.length === 0 && <SignalBadge state="emerging" label="Helios DePIN" />}
           <a href="/ask" style={{ fontSize: 13 }}>Ask a question →</a>
           <a href="/onboarding" style={{ fontSize: 13 }}>Retake onboarding →</a>
         </div>

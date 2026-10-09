@@ -40,8 +40,13 @@ const main = async () => {
   assert(wl.length === 1, "watchlist add/list");
   await caller.watchlistRemove({ kind: "project", refId: "helios-depin" });
 
-  const alerts = await caller.alertsPreview();
-  assert(alerts.length === 1, "alerts preview");
+  const fresh = await caller.alertsDigest();
+  assert(fresh.length >= 1, "digest generates");
+  const again = await caller.alertsDigest();
+  assert(again.length === 0, "digest dedupes");
+  await caller.alertsRead({ id: fresh[0].id });
+  const listed = await caller.alertsList();
+  assert(listed.length >= 1 && listed.some((a) => a.read), "alerts list + read");
 
   await caller.historyClear();
   // eslint-disable-next-line no-console

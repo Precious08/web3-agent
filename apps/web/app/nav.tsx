@@ -18,7 +18,10 @@ const GROUPS: { caption: string; links: Link[] }[] = [
   },
   {
     caption: "System",
-    links: [{ href: "/settings", label: "Settings", icon: "⚙", hint: "Tune your signal", match: (p) => p === "/settings" }],
+    links: [
+      { href: "/alerts", label: "Alerts", icon: "!", hint: "Meaningful changes only", match: (p) => p === "/alerts" },
+      { href: "/settings", label: "Settings", icon: "⚙", hint: "Tune your signal", match: (p) => p === "/settings" },
+    ],
   },
 ];
 

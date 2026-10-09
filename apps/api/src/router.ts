@@ -25,7 +25,15 @@ const SettingsInput = z.object({
 
 let settings: UserSettings = { ...DEFAULT_SETTINGS };
 let watchlist: { kind: string; refId: string }[] = [];
-let history: string[] = [];
+type Hist = { id: string; label: string; href: string; at: string };
+let history: Hist[] = [];
+const remember = (h: Omit<Hist, "id" | "at">) => {
+  if (!settings.saveHistory) return;
+  history.unshift({ ...h, id: `${Date.now()}-${Math.random().toString(36).slice(2)}`, at: new Date().toISOString() });
+  history = history.slice(0, 20);
+};
+type AlertItem = { id: string; refId: string; title: string; body: string; read: boolean; at: string };
+let alerts: AlertItem[] = [];
 
 export const appRouter = t.router({
   health: t.procedure.query(() => ({ ok: true, version: "0.0.0-phase3b" })),
@@ -50,7 +58,7 @@ export const appRouter = t.router({
 
   ask: t.procedure.input(z.object({ question: z.string() })).query(({ input }) => {
     const top = MOCK_DISCOVERIES[0];
-    history.push(input.question);
+    remember({ label: input.question.slice(0, 80), href: `/ask?q=${encodeURIComponent(input.question)}` });
     return {
       summary: `Stub answer for: ${input.question}`,
       signals: top.signals,
@@ -75,6 +83,7 @@ export const appRouter = t.router({
   entity: t.procedure.input(z.object({ id: z.string() })).query(({ input }) => {
     const found = MOCK_DISCOVERIES.find((d) => d.id === input.id);
     if (!found) throw new Error(`unknown id: ${input.id}`);
+    remember({ label: found.title, href: `/entity/${found.id}` });
     return found;
   }),
 
@@ -95,9 +104,34 @@ export const appRouter = t.router({
     return watchlist;
   }),
 
-  alertsPreview: t.procedure.query(() => [
-    { id: "al1", title: "Helios: dev 4x + 12 integrations", threshold: settings.globalAlertThreshold, read: false },
-  ]),
+  // Alerts digest (global threshold + daily cap, US-18). Generates from the ranked
+  // stream, dedupes by refId, stores in-memory (Neon persistence lands Phase 9).
+  alertsDigest: t.procedure.query(() => {
+    const th = settings.globalAlertThreshold;
+    const pass = (d: (typeof MOCK_DISCOVERIES)[number]) =>
+      th === "strong"
+        ? d.signals.some((s) => s.state === "strong")
+        : th === "moderate"
+          ? d.signals.some((s) => s.state === "strong" || s.state === "emerging")
+          : d.signals.some((s) => s.state !== "noise");
+    const fresh = rank(MOCK_DISCOVERIES, settings)
+      .filter(pass)
+      .filter((d) => !alerts.some((a) => a.refId === d.id))
+      .slice(0, Math.max(0, settings.maxPerDay - alerts.filter((a) => !a.read).length));
+    for (const d of fresh) {
+      alerts.unshift({
+        id: `${Date.now()}-${d.id}`, refId: d.id,
+        title: d.title, body: `${d.why} — evidence: ${d.evidence.length}, counters: ${d.counters.length}.`,
+        read: false, at: new Date().toISOString(),
+      });
+    }
+    return fresh.map((d) => alerts.find((a) => a.refId === d.id)!);
+  }),
+  alertsList: t.procedure.query(() => alerts),
+  alertsRead: t.procedure.input(z.object({ id: z.string() })).mutation(({ input }) => {
+    alerts = alerts.map((a) => (a.id === input.id ? { ...a, read: true } : a));
+    return alerts;
+  }),
 
   historyList: t.procedure.query(() => history),
   historyClear: t.procedure.mutation(() => {
