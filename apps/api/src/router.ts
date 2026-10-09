@@ -4,6 +4,7 @@ import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { DEFAULT_SETTINGS, type UserSettings } from "@web3-agent/types";
 import { MOCK_DISCOVERIES } from "./mock";
+import { rank } from "./ranking";
 
 const t = initTRPC.create();
 const SettingsInput = z.object({
@@ -41,7 +42,10 @@ export const appRouter = t.router({
 
   search: t.procedure.input(z.object({ q: z.string() })).query(({ input }) => {
     const q = input.q.toLowerCase();
-    return MOCK_DISCOVERIES.filter((d) => (d.title + d.why).toLowerCase().includes(q)).slice(0, 10);
+    // Direct search may surface blocked items (with warning left to the UI);
+    // ranking still orders by convergence.
+    const hits = MOCK_DISCOVERIES.filter((d) => (d.title + d.why).toLowerCase().includes(q)).slice(0, 10);
+    return rank(hits, settings);
   }),
 
   ask: t.procedure.input(z.object({ question: z.string() })).query(({ input }) => {
@@ -62,8 +66,10 @@ export const appRouter = t.router({
     .input(z.object({ view: z.enum(["foryou", "early"]).default("foryou") }).optional())
     .query(({ input }) => {
       const view = input?.view ?? "foryou";
-      if (view === "early") return MOCK_DISCOVERIES.filter((d) => d.signals.some((s) => s.state === "emerging" || s.state === "uncertain"));
-      return MOCK_DISCOVERIES.slice(0, 10);
+      // Feed = ranked by settings (ADR-006); early view filters pre-consensus on top.
+      const ordered = rank(MOCK_DISCOVERIES, settings);
+      if (view === "early") return ordered.filter((d) => d.signals.some((s) => s.state === "emerging" || s.state === "uncertain"));
+      return ordered.slice(0, 10);
     }),
 
   entity: t.procedure.input(z.object({ id: z.string() })).query(({ input }) => {
