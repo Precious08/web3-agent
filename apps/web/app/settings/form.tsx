@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DEFAULT_SETTINGS, type UserSettings } from "@web3-agent/types";
 import { saveLocal, syncToApi } from "../../lib/settings";
 import { Eyebrow } from "../../components/chrome";
@@ -39,10 +39,24 @@ export default function Form({ initial }: { initial: UserSettings }) {
     }
   });
   const [msg, setMsg] = useState<string | null>(null);
+  const [saving, setSaving] = useState<"idle" | "working" | "done">("idle");
+  const [lastOk, setLastOk] = useState(true);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
 
   const save = async () => {
+    if (saving === "working") return;
+    setSaving("working");
     saveLocal(s);
-    setMsg((await syncToApi(s)) ? "Saved and synced." : "Saved on this device — syncs when you're back online.");
+    const ok = await syncToApi(s);
+    setLastOk(ok);
+    setMsg(ok ? "Saved and synced." : "Saved on this device — syncs when you're back online.");
+    setSaving("done");
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setSaving("idle"), 2000);
   };
   const reset = () => {
     setS({ ...DEFAULT_SETTINGS });
@@ -97,7 +111,14 @@ export default function Form({ initial }: { initial: UserSettings }) {
       </Group>
 
       <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <button onClick={save} style={{ background: "linear-gradient(92deg, var(--accent), var(--accent-2))", color: "#06121f", border: "none", borderRadius: 10, padding: "10px 22px", fontWeight: 700, cursor: "pointer" }}>Save preferences</button>
+        <button onClick={save} disabled={saving === "working"}
+          style={{
+            background: saving === "done" ? "linear-gradient(92deg, var(--accent-2), var(--accent))" : "linear-gradient(92deg, var(--accent), var(--accent-2))",
+            color: "#06121f", border: "none", borderRadius: 10, padding: "10px 22px", fontWeight: 700,
+            cursor: saving === "working" ? "wait" : "pointer", minWidth: 168, opacity: saving === "working" ? 0.75 : 1,
+          }}>
+          {saving === "working" ? "Saving…" : saving === "done" ? (lastOk ? "Saved & synced ✓" : "Saved ✓") : "Save preferences"}
+        </button>
         <button onClick={reset} style={{ background: "transparent", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 18px", cursor: "pointer" }}>Reset</button>
       </div>
       {msg && <p role="status" style={{ margin: 0, fontSize: 13, color: "var(--text-muted)" }}>{msg}</p>}
