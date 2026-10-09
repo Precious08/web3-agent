@@ -20,9 +20,11 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
-# Logs / coverage
+# Logs / coverage / test artifacts
 *.log
 coverage/
+test-results/
+playwright-report/
 
 # Infra / data
 postgres-data/
