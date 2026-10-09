@@ -1,12 +1,24 @@
-// tRPC router stubs (3b). Backed by mocks + in-memory settings/watchlist.
-// Prisma + real ranking land in Phase 4/5/7; every response already carries whyCodes.
-import { initTRPC } from "@trpc/server";
+// tRPC router (3b stubs → 7b ranked → 8b guarded). In-memory until Neon lands Phase 9.
+import { initTRPC, TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { DEFAULT_SETTINGS, type UserSettings } from "@web3-agent/types";
 import { MOCK_DISCOVERIES } from "./mock";
 import { rank } from "./ranking";
+import { checkLimit } from "./rateLimit";
+import { redactPII } from "./redact";
 
-const t = initTRPC.create();
+const t = initTRPC.context<{ ip: string }>().create();
+
+/** Guard for expensive procedures: ask 20/min, reads 60/min per IP (8b). */
+const limited = (max: number) =>
+  t.middleware(({ ctx, next, path }) => {
+    if (!checkLimit(`${ctx.ip}:${path}`, max, 60_000)) {
+      throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Slow down — rate limit hit. Try again in a minute." });
+    }
+    return next();
+  });
+const askGuard = t.procedure.use(limited(20));
+const readGuard = t.procedure.use(limited(60));
 const SettingsInput = z.object({
   stages: z.array(z.string()).optional(),
   sectors: z.array(z.string()).optional(),
@@ -48,7 +60,7 @@ export const appRouter = t.router({
     return settings;
   }),
 
-  search: t.procedure.input(z.object({ q: z.string() })).query(({ input }) => {
+  search: readGuard.input(z.object({ q: z.string().max(500) })).query(({ input }) => {
     const q = input.q.toLowerCase();
     // Direct search may surface blocked items (with warning left to the UI);
     // ranking still orders by convergence.
@@ -56,11 +68,12 @@ export const appRouter = t.router({
     return rank(hits, settings);
   }),
 
-  ask: t.procedure.input(z.object({ question: z.string() })).query(({ input }) => {
+  ask: askGuard.input(z.object({ question: z.string().max(2000) })).query(({ input }) => {
     const top = MOCK_DISCOVERIES[0];
-    remember({ label: input.question.slice(0, 80), href: `/ask?q=${encodeURIComponent(input.question)}` });
+    const clean = redactPII(input.question);
+    remember({ label: clean.slice(0, 80), href: `/ask?q=${encodeURIComponent(clean)}` });
     return {
-      summary: `Stub answer for: ${input.question}`,
+      summary: `Stub answer for: ${clean}`,
       signals: top.signals,
       evidence: top.evidence,
       counters: top.counters,
@@ -70,7 +83,7 @@ export const appRouter = t.router({
     };
   }),
 
-  discover: t.procedure
+  discover: readGuard
     .input(z.object({ view: z.enum(["foryou", "early"]).default("foryou") }).optional())
     .query(({ input }) => {
       const view = input?.view ?? "foryou";
@@ -80,7 +93,7 @@ export const appRouter = t.router({
       return ordered.slice(0, 10);
     }),
 
-  entity: t.procedure.input(z.object({ id: z.string() })).query(({ input }) => {
+  entity: readGuard.input(z.object({ id: z.string().max(200) })).query(({ input }) => {
     const found = MOCK_DISCOVERIES.find((d) => d.id === input.id);
     if (!found) throw new Error(`unknown id: ${input.id}`);
     remember({ label: found.title, href: `/entity/${found.id}` });

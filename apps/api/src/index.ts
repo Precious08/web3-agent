@@ -10,7 +10,11 @@ export function health() {
 
 if (require.main === module) {
   const port = Number(process.env.PORT ?? 4000);
-  const { listen } = createHTTPServer({ router: appRouter });
+  const { listen } = createHTTPServer({
+    router: appRouter,
+    createContext: ({ req }) =>
+      ({ ip: (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() || req.socket?.remoteAddress || "local" }),
+  });
   const server = listen(port);
   // eslint-disable-next-line no-console
   console.log(`api listening on :${port}`);

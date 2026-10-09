@@ -2,7 +2,7 @@
 // Run: pnpm --filter @web3-agent/api exec tsx src/smoke.ts
 import { appRouter } from "./router";
 
-const caller = appRouter.createCaller({});
+const caller = appRouter.createCaller({ ip: "smoke" });
 const assert = (cond: unknown, name: string) => {
   if (!cond) throw new Error(`smoke FAIL: ${name}`);
   // eslint-disable-next-line no-console
