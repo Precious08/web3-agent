@@ -294,15 +294,21 @@ export function CompareTable2Way({ a, b }: { a: Record<string, string>; b: Recor
 
 export function ResearchSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading research" style={{ padding: 14, color: "var(--text-faint)" }}>
-      Loading research…
+    <div aria-busy="true" aria-label="Loading research" style={{ display: "grid", gap: 10, padding: 18 }}>
+      {[72, 94, 58].map((w, i) => (
+        <span key={i} className="shimmer-bar" style={{ width: `${w}%`, animationDelay: `${i * 140}ms` }} />
+      ))}
     </div>
   );
 }
-export function EmptyState({ hint }: { hint: string }) {
+export function EmptyState({ hint, action }: { hint: string; action?: { label: string; href: string } }) {
   return (
-    <p role="status" style={{ color: "var(--text-muted)" }}>
-      Nothing here yet. {hint}
-    </p>
+    <div role="status" style={{ display: "grid", gap: 8, justifyItems: "center", textAlign: "center", padding: 28 }}>
+      <span aria-hidden style={{ fontSize: 22, color: "var(--text-faint)" }}>◌</span>
+      <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-muted)", maxWidth: 320 }}>{hint}</p>
+      {action && (
+        <a href={action.href} style={{ fontSize: 13, fontWeight: 650 }}>{action.label} →</a>
+      )}
+    </div>
   );
 }
