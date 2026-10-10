@@ -26,8 +26,8 @@
   --radius-lg: 20px;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --glow-strong: 0 0 24px rgb(52 227 154 / 0.16);
-  --glow-emerging: 0 0 24px rgb(109 155 255 / 0.18);
-  --card-shadow: 0 18px 50px rgb(0 0 0 / 0.45);
+  --glow-strong: 0 0 14px rgb(52 227 154 / 0.1);
+  --glow-emerging: 0 0 14px rgb(109 155 255 / 0.12);
+  --card-shadow: 0 8px 28px rgb(0 0 0 / 0.32);
   color-scheme: dark;
 }

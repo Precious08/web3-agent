@@ -9,13 +9,6 @@ const LABEL: Record<SignalState, string> = {
   noise: "Noise",
 };
 
-const GLOW: Record<SignalState, string> = {
-  strong: "var(--glow-strong)",
-  emerging: "var(--glow-emerging)",
-  uncertain: "none",
-  noise: "none",
-};
-
 export type SignalBadgeProps = { state: SignalState; label?: string };
 export function SignalBadge({ state, label }: SignalBadgeProps) {
   const color = `var(--signal-${state})`;
@@ -30,13 +23,12 @@ export function SignalBadge({ state, label }: SignalBadgeProps) {
         gap: 7,
         padding: "4px 12px 4px 10px",
         borderRadius: 999,
-        border: `1px solid color-mix(in srgb, ${color} 42%, transparent)`,
-        background: `linear-gradient(180deg, color-mix(in srgb, ${color} 14%, var(--surface)) 0%, var(--surface) 100%)`,
+        border: `1px solid color-mix(in srgb, ${color} 36%, transparent)`,
+        background: "var(--surface-2)",
         color: "var(--text)",
         fontSize: 12,
         fontWeight: 650,
         letterSpacing: 0.3,
-        boxShadow: GLOW[state],
         whiteSpace: "nowrap",
       }}
     >
@@ -231,7 +223,7 @@ export function DiscoveryCard({ item }: { item: Discovery }) {
         overflow: "hidden",
         border: "1px solid var(--border-soft)",
         borderRadius: "var(--radius-lg)",
-        background: `linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%)`,
+        background: "var(--surface)",
         boxShadow: "var(--card-shadow)",
       }}
     >

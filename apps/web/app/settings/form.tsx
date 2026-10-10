@@ -6,7 +6,7 @@ import { saveLocal, syncToApi } from "../../lib/settings";
 import { Eyebrow } from "../../components/chrome";
 
 const field = (): React.CSSProperties => ({ background: "var(--bg)", color: "var(--text)", border: "1px solid var(--border-soft)", borderRadius: 10, padding: "9px 13px", fontSize: 14, width: "100%" });
-const panel: React.CSSProperties = { border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%)", boxShadow: "var(--card-shadow)", padding: 18, display: "grid", gap: 14 };
+const panel: React.CSSProperties = { border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "var(--surface)", boxShadow: "var(--card-shadow)", padding: 18, display: "grid", gap: 14 };
 const lab = (): React.CSSProperties => ({ display: "grid", gap: 7, fontSize: 13.5, fontWeight: 600 });
 const hint = (): React.CSSProperties => ({ margin: 0, fontSize: 12.5, color: "var(--text-faint)", fontWeight: 400 });
 

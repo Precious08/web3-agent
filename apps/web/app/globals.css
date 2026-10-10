@@ -15,8 +15,8 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(900px 420px at 12% -6%, rgb(109 155 255 / 0.1), transparent 60%),
-    radial-gradient(760px 380px at 88% -8%, rgb(52 227 154 / 0.08), transparent 60%),
+    radial-gradient(900px 420px at 12% -6%, rgb(109 155 255 / 0.06), transparent 60%),
+    radial-gradient(760px 380px at 88% -8%, rgb(52 227 154 / 0.05), transparent 60%),
     var(--bg-0);
   min-height: 100vh;
 }
@@ -80,8 +80,7 @@ textarea:focus {
 }
 .lift:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--border-soft));
-  box-shadow: 0 14px 40px rgb(0 0 0 / 0.45), 0 0 24px rgb(109 155 255 / 0.08);
+  border-color: var(--border);
 }
 
 .tabular {

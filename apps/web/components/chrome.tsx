@@ -32,7 +32,7 @@ export function Lede({ children }: { children: ReactNode }) {
 
 export function Panel({ children, pad = 18 }: { children: ReactNode; pad?: number }) {
   return (
-    <div style={{ border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%)", boxShadow: "var(--card-shadow)", padding: pad }}>
+    <div style={{ border: "1px solid var(--border-soft)", borderRadius: "var(--radius-lg)", background: "var(--surface)", boxShadow: "var(--card-shadow)", padding: pad }}>
       {children}
     </div>
   );
